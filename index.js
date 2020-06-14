@@ -8,4 +8,4 @@ client.on('message', msg => {
     if(!enabled === true){return};
     msg.react('707263484035072000');
 });
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.token);
