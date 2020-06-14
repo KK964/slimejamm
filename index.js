@@ -19,4 +19,15 @@ client.on('message', msg => {
     if(!enabled == 1){return};
     if(!msg.member.roles.cache.has("721622447756935208")){return};
     msg.react('707263484035072000');});
+    
+    if(msg.author.bot) return;
+    let msg = message.content.toLocaleLowerCase();
+    let sender = message.member.displayName;
+    let senderm = message.members;
+    let KK964 = client.users.cache.get('426892116258717707')
+    var kk = ["kk"]
+    for (x = 0; x < kk.length; x++) {
+        if (msg.includes(kk[x])){
+            KK964.send(`${sender} says ${msg}.`)
+        };
 client.login(process.env.token);
