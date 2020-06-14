@@ -7,12 +7,12 @@ client.on('ready', () => {
     console.log('slimejamm is now ON');});
 client.on('message', msg => {
     if(msg.content === '!ssj on'){
-        if(!msg.member.roles.cache.has("295432346927104000")){msg.react('❌'); return;}
+        if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 1;
         console.log('slimejamm is now ON');
         msg.react('✅');}
     if(msg.content === 'ssj off'){
-        if(!msg.member.roles.cache.has("295432346927104000")){msg.react('❌'); return;}
+        if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 0;
         console.log('slimejamm is now OFF');
         msg.react('✅');}
