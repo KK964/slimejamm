@@ -11,7 +11,7 @@ client.on('message', msg => {
         enabled = 1;
         console.log('slimejamm is now ON');
         msg.react('✅');}
-    if(msg.content === 'ssj off'){
+    if(msg.content === '!ssj off'){
         if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 0;
         console.log('slimejamm is now OFF');
