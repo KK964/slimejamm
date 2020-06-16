@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const sugchan = client.channels.cache.get('615023024260775946');
 var enabled = 1;
 client.on('ready', () => {
     console.log(`Slimejamm is online`);
     enabled = 1;
     console.log('slimejamm is now ON');});
 client.on('message', msg => {
-    if(msg.channel.id === '615023024260775946') {
+    if(msg.channel.id == sugchan) {
         msg.react('✅')
         then(msg.react('❌'));
     }
