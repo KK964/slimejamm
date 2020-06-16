@@ -16,6 +16,7 @@ client.on('message', msg => {
         enabled = 0;
         console.log('slimejamm is now OFF');
         msg.react('✅');}
+    if(msg.webhookID){return};
     if(msg.channel.type === 'dm'){return};
     if(msg.author == null){return};
     if(!enabled == 1){return};
