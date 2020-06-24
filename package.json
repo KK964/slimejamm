@@ -4,11 +4,16 @@
   "description": "Reacts to all of sjamms msgs with :slimespider:",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "KK964",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.2.0"
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "dotenv-flow": "^3.1.0",
+    "nodemon": "^2.0.4"
   }
 }
