@@ -11,7 +11,6 @@ client.on('ready', () => {
     enabled = 1;
     console.log('slimejamm is now ON');});
 
-    client.user.setStatus('online')
     client.user.setPresence({
         game: {
             name: 'sj for cringe messages.',
