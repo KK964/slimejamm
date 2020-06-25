@@ -9,7 +9,7 @@ var enabled = 1;
 client.on('ready', () => {
     console.log(`Slimejamm is online`);
     enabled = 1;
-    console.log('slimejamm is now ON');});
+    console.log('slimejamm is now ON');
 
     client.user.setPresence({
         game: {
@@ -17,7 +17,7 @@ client.on('ready', () => {
             type: 'WATCHING',
             url: 'https://github.com/KK964/'
         }
-    })
+    })});
 client.on('message', msg => {
     if(msg.channel.id == '615023024260775946') {
         msg.react('✅')
