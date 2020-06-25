@@ -10,14 +10,10 @@ client.on('ready', () => {
     console.log(`Slimejamm is online`);
     enabled = 1;
     console.log('slimejamm is now ON');
-
-    client.user.setPresence({
-        game: {
-            name: 'sj for cringe messages.',
-            type: 'WATCHING',
-            url: 'https://github.com/KK964/'
-        }
-    })});
+    client.user.setPresence({ activity: { name: 'sj shiping sim' }, status: 'online' })
+    .then(console.log)
+    .catch(console.error);
+});
 client.on('message', msg => {
     if(msg.channel.id == '615023024260775946') {
         msg.react('✅')
@@ -27,12 +23,18 @@ client.on('message', msg => {
         if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 1;
         console.log('slimejamm is now ON');
-        msg.react('✅');}
+        msg.react('✅');
+        client.user.setPresence({ activity: { name: 'sj shiping sim' }, status: 'online' })
+        .then(console.log)
+        .catch(console.error);}
     if(msg.content === '!ssj off'){
         if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 0;
         console.log('slimejamm is now OFF');
-        msg.react('✅');}
+        msg.react('✅');
+        client.user.setPresence({ activity: { name: 'nothing ;-;' }, status: 'idle' })
+        .then(console.log)
+        .catch(console.error);}
     if(msg.webhookID){return};
     if(msg.channel.type === 'dm'){return};
     if(msg.author == null){return};
