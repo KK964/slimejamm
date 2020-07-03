@@ -16,6 +16,7 @@ client.on('ready', () => {
 });
 client.on('message', msg => {
     if(msg.channel.id == '615023024260775946') {
+        if(msg.member.user.bot) {return;}
         msg.react('✅')
         .then(msg.react('❌'));
     }
