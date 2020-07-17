@@ -40,7 +40,9 @@ client.on('message', msg => {
     if(msg.channel.type === 'dm'){return};
     if(msg.author == null){return};
     if(!enabled == 1){return};
-    if(!msg.member.roles.cache.has("721622447756935208")){return};
-    msg.react('707263484035072000');
+    if(msg.member.roles.cache.has("721622447756935208")){
+        if(msg.channel.id=='615023024260775946' || msg.channel.id=='459506938154057732') {return};
+        msg.react('707263484035072000');
+    };
 });
 client.login(config.token);
