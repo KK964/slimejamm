@@ -7,10 +7,10 @@ const config = {
 };
 var enabled = 1;
 client.on('ready', () => {
-    console.log(`Slimejamm is online`);
+    console.log(`SlimeSpider is online`);
     enabled = 1;
-    console.log('slimejamm is now ON');
-    client.user.setPresence({ activity: { name: 'sj shiping sim' }, status: 'online' })
+    console.log('SlimeSpider is now ON');
+    client.user.setPresence({ activity: { name: 'is a spider' }, status: 'online' })
     .then(console.log)
     .catch(console.error);
 });
@@ -23,7 +23,7 @@ client.on('message', msg => {
     if(msg.content === '!ssj on'){
         if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 1;
-        console.log('slimejamm is now ON');
+        console.log('SlimeSpider is now ON');
         msg.react('✅');
         client.user.setPresence({ activity: { name: 'sj shiping sim' }, status: 'online' })
         .then(console.log)
@@ -31,7 +31,7 @@ client.on('message', msg => {
     if(msg.content === '!ssj off'){
         if(!msg.member.hasPermission('MUTE_MEMBERS')){msg.react('❌'); return;}
         enabled = 0;
-        console.log('slimejamm is now OFF');
+        console.log('SlimeSpider is now OFF');
         msg.react('✅');
         client.user.setPresence({ activity: { name: 'nothing ;-;' }, status: 'idle' })
         .then(console.log)
