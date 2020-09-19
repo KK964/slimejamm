@@ -53,7 +53,6 @@ client.on('message', (msg) => {
       .catch(console.error);
   }
   if (msg.content === `!ssj results`) {
-    msg.react('<:gmail:756694775436148816>');
     const rankEmbed = new Discord.MessageEmbed()
       .setColor('#fcba03')
       .setAuthor(client.user.username, client.user.avatarURL)
@@ -72,7 +71,11 @@ client.on('message', (msg) => {
           '9. SlushyCats: 1.0/10\n' +
           '10. RaphyRod8055 0.2/10\n',
       });
-    msg.author.send('test');
+    msg.author.send(rankEmbed).catch(() => {
+      msg.react('❌');
+      return;
+    });
+    msg.react('756694775436148816');
   }
 
   if (msg.webhookID) {
