@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 require('dotenv-flow').config();
 const randEmoji = require('./randEmoji');
+const conf = require('./cfg.json');
 const config = {
   token: process.env.TOKEN,
 };
@@ -12,7 +13,10 @@ client.on('ready', () => {
   enabled = 1;
   console.log('SlimeSpider is now ON');
   client.user
-    .setPresence({ activity: { name: 'is a spider' }, status: 'online' })
+    .setPresence({
+      activity: { name: '"!ssj results" for sim results' },
+      status: 'online',
+    })
     .then(console.log)
     .catch(console.error);
 });
