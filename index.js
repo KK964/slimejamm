@@ -52,6 +52,10 @@ client.on('message', (msg) => {
       .then(console.log)
       .catch(console.error);
   }
+  if (msg.content === `!ssj results`) {
+    msg.author.send('test');
+  }
+
   if (msg.webhookID) {
     return;
   }
