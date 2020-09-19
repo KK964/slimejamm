@@ -55,21 +55,21 @@ client.on('message', (msg) => {
   if (msg.content === `!ssj results`) {
     const rankEmbed = new Discord.MessageEmbed()
       .setColor('#fcba03')
-      .setAuthor(client.user.username, client.user.avatarURL)
+      .setAuthor(client.user.username, client.user.avatarURL())
       .setTitle('SJ Shipping Sim Results')
       .addFields({
         name: 'Results',
         value:
-          '1. SubieBerry: 9.8/10\n' +
-          '2. Dovyeon: 9.0\n' +
-          '3. PureGero: 8.7/10\n' +
-          '4. null: 8.2/10\n' +
-          '5. [Myth] [HC] [0] +DaOrdinary: 7.1/10\n' +
-          '6. RJAE507: 5.2/10\n' +
-          '7. greenteacups: 3.1/10\n' +
-          '8. PureBot: 2.2/10\n' +
-          '9. SlushyCats: 1.0/10\n' +
-          '10. RaphyRod8055 0.2/10\n',
+          '**1. SubieBerry**: 9.8/10\n' +
+          '**2. Dovyeon**: 9.0\n' +
+          '**3. PureGero**: 8.7/10\n' +
+          '**4. null**: 8.2/10\n' +
+          '**5. [Myth] [HC] [0] +DaOrdinary**: 7.1/10\n' +
+          '**6. RJAE507**: 5.2/10\n' +
+          '**7. greenteacups**: 3.1/10\n' +
+          '**8. PureBot**: 2.2/10\n' +
+          '**9. SlushyCats**: 1.0/10\n' +
+          '**10. RaphyRod8055**: 0.2/10\n',
       });
     msg.author.send(rankEmbed).catch(() => {
       msg.react('❌');
