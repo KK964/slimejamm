@@ -12,20 +12,16 @@ client.on('ready', () => {
   console.log(`SlimeSpider is online`);
   enabled = 1;
   console.log('SlimeSpider is now ON');
-  client.user
-    .setPresence({
-      activity: { name: '"!ssj results" for sim results' },
-      status: 'online',
-    })
-    .then(console.log)
-    .catch(console.error);
+  client.user.setPresence({
+    activity: { name: '"!ssj results" for sim results' },
+    status: 'online',
+  });
 });
 client.on('message', (msg) => {
   if (msg.channel.id == '615023024260775946') {
     if (msg.member.user.bot) {
       return;
     }
-    msg.react('758701455766323202').then(msg.react('758701482248896552'));
     msg.react('✅').then(msg.react('❌'));
   }
   if (msg.content === '!ssj on') {
@@ -65,16 +61,16 @@ client.on('message', (msg) => {
       .addFields({
         name: 'Results',
         value:
-          '**1. SubieBerry**: 9.8/10\n' +
-          '**2. Dovyeon**: 9.0\n' +
-          '**3. PureGero**: 8.7/10\n' +
-          '**4. null**: 8.2/10\n' +
-          '**5. [Myth] [HC] [0] +DaOrdinary**: 7.1/10\n' +
-          '**6. RJAE507**: 5.2/10\n' +
-          '**7. greenteacups**: 3.1/10\n' +
-          '**8. PureBot**: 2.2/10\n' +
-          '**9. SlushyCats**: 1.0/10\n' +
-          '**10. RaphyRod8055**: 0.2/10\n',
+          `**1. ${getUsername('295483724429262848')}**: 9.8/10\n` +
+          `**2. ${getUsername('295279743480365066')}**: 9.0\n` +
+          `**3. ${getUsername('276543437241843713')}**: 8.7/10\n` +
+          `**4. null**: 8.2/10\n` +
+          `**5. ${getUsername('202873006773633024')}**: 7.1/10\n` +
+          `**6. ${getUsername('554128619635736601')}**: 5.2/10\n` +
+          `**7. ${getUsername('268365742636793856')}**: 3.1/10\n` +
+          `**8. ${getUsername('728442617498566666')}**: 2.2/10\n` +
+          `**9. ${getUsername('635699957080260632')}**: 1.0/10\n` +
+          `**10. ${getUsername('718860903793164450')}**: 0.2/10\n`,
       });
     msg.author.send(rankEmbed).catch(() => {
       msg.react('❌');
@@ -108,7 +104,10 @@ client.on('message', (msg) => {
     }
   }
 });
-
+function getUsername(id) {
+  return client.guilds.cache.get('295429838041382912').members.cache.get(id)
+    .displayName;
+}
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
