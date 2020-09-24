@@ -25,7 +25,7 @@ client.on('message', (msg) => {
     if (msg.member.user.bot) {
       return;
     }
-    msg.react('✅').then(msg.react('❌'));
+    msg.react('758701455766323202').then(msg.react('758701482248896552'));
   }
   if (msg.content === '!ssj on') {
     if (!msg.member.hasPermission('MUTE_MEMBERS')) {
