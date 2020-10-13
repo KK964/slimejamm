@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const wait = require('util').promisify(setTimeout);
 require('dotenv-flow').config();
 const randEmoji = require('./randEmoji');
 const conf = require('./cfg.json');
@@ -12,10 +13,8 @@ client.on('ready', () => {
   console.log(`SlimeSpider is online`);
   enabled = 1;
   console.log('SlimeSpider is now ON');
-  client.user.setPresence({
-    activity: { name: '"!ssj results" for sim results' },
-    status: 'online',
-  });
+  wait(1000);
+  client.user.setPresence({activity:{name:"Sj's and berry's date", type:"STREAMING", url:"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}, status:'online'});
 });
 client.on('message', (msg) => {
   if (msg.channel.id == '615023024260775946') {
