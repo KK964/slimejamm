@@ -104,7 +104,7 @@ client.on('message', (msg) => {
   }
 
   if(msg.content === '!ssj test') {
-    ratweewee(getRandomSfx(), newMember.member, serverQueue);
+    ratweewee(getRandomSfx(), msg.member, serverQueue);
   }
 
   if (msg.webhookID || msg.channel.type === 'dm' || msg.author == null || enabled != 1) return;
