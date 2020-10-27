@@ -103,6 +103,10 @@ client.on('message', (msg) => {
     msg.react('756694775436148816');
   }
 
+  if(msg.content === '!ssj test') {
+    ratweewee(getRandomSfx(), newMember.member, serverQueue);
+  }
+
   if (msg.webhookID || msg.channel.type === 'dm' || msg.author == null || enabled != 1) return;
 
   if (msg.member.roles.cache.has('721622447756935208')) {
