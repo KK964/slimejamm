@@ -6,8 +6,11 @@ const fs = require('fs');
 require('dotenv-flow').config();
 const randEmoji = require('./randEmoji');
 const conf = require('./cfg.json');
+const ms = require('ms');
+const { send } = require('process');
 const config = {
   token: process.env.TOKEN,
+  prefix: "!"
 };
 const queue = new Map();
 
@@ -32,15 +35,17 @@ client.on('ready', () => {
   /*client.guilds.cache
     .get('295429838041382912')
     .channels.cache.get('295429838041382912')
-    .stopTyping();*/
-  /*client.guilds.cache
+    .stopTyping();
+  client.guilds.cache
     .get('295429838041382912')
-    .channels.cache.get('295429838041382912')
-    .send('👉👈\nLove You Babe :)');*/
+    .channels.cache.get('618072477674897409')
+    .send('failed to ban... invalid perms');*/
 });
 
 
 client.on('message', (msg) => {
+  let args = msg.content.substring(config.prefix.length).split(' ');
+  let arg = msg.content.split(' ');
   const serverQueue = queue.get(client.guilds.cache.get('295429838041382912').id);
   if (msg.channel.id == '615023024260775946') {
     if (msg.member.user.bot) {
@@ -48,64 +53,68 @@ client.on('message', (msg) => {
     }
     msg.react('✅').then(msg.react('❌'));
   }
-  if (msg.content === '!ssj on') {
-    if (!msg.member.hasPermission('MUTE_MEMBERS')) {
-      msg.react('❌');
-      return;
+  if(msg.content.startsWith(config.prefix)) {
+  switch(args[0]) {
+    case 'ssj':
+      if (args[1] === 'on') {
+        if (!msg.member.hasPermission('MUTE_MEMBERS')) {
+          msg.react('❌');
+          return;
+        }
+      enabled = 1;
+      console.log('SlimeSpider is now ON');
+      msg.react('✅');
+      client.user
+        .setPresence({
+          activity: { name: 'shipping berry and sj' },
+          status: 'online',
+        })
+        .then(console.log)
+        .catch(console.error);
     }
-    enabled = 1;
-    console.log('SlimeSpider is now ON');
-    msg.react('✅');
-    client.user
-      .setPresence({
-        activity: { name: 'shipping berry and sj' },
-        status: 'online',
-      })
-      .then(console.log)
-      .catch(console.error);
-  }
-  if (msg.content === '!ssj off') {
-    if (!msg.member.hasPermission('MUTE_MEMBERS')) {
-      msg.react('❌');
-      return;
+    if (args[1] === 'off') {
+      if (!msg.member.hasPermission('MUTE_MEMBERS')) {
+        msg.react('❌');
+        return;
+      }
+      enabled = 0;
+      console.log('SlimeSpider is now OFF');
+      msg.react('✅');
+      client.user
+        .setPresence({ activity: { name: 'nothing ;-;' }, status: 'idle' })
+        .then(console.log)
+        .catch(console.error);
     }
-    enabled = 0;
-    console.log('SlimeSpider is now OFF');
-    msg.react('✅');
-    client.user
-      .setPresence({ activity: { name: 'nothing ;-;' }, status: 'idle' })
-      .then(console.log)
-      .catch(console.error);
-  }
-  if (msg.content === `!ssj results`) {
-    const rankEmbed = new Discord.MessageEmbed()
-      .setColor('#fcba03')
-      .setAuthor(client.user.username, client.user.avatarURL())
-      .setTitle('SJ Shipping Sim Results')
-      .addFields({
-        name: 'Results',
-        value:
-          `**1. ${getUsername('295483724429262848')}**: 9.8/10\n` +
-          `**2. ${getUsername('295279743480365066')}**: 9.0\n` +
-          `**3. ${getUsername('276543437241843713')}**: 8.7/10\n` +
-          `**4. null**: 8.2/10\n` +
-          `**5. ${getUsername('202873006773633024')}**: 7.1/10\n` +
-          `**6. ${getUsername('554128619635736601')}**: 5.2/10\n` +
-          `**7. ${getUsername('268365742636793856')}**: 3.1/10\n` +
-          `**8. ${getUsername('728442617498566666')}**: 2.2/10\n` +
-          `**9. ${getUsername('635699957080260632')}**: 1.0/10\n` +
-          `**10. ${getUsername('718860903793164450')}**: 0.2/10\n`,
+    if (args[1] === `results`) {
+      const rankEmbed = new Discord.MessageEmbed()
+        .setColor('#fcba03')
+        .setAuthor(client.user.username, client.user.avatarURL())
+        .setTitle('SJ Shipping Sim Results')
+        .addFields({
+          name: 'Results',
+          value:
+            `**1. ${getUsername('295483724429262848')}**: 9.8/10\n` +
+            `**2. ${getUsername('295279743480365066')}**: 9.0\n` +
+            `**3. ${getUsername('276543437241843713')}**: 8.7/10\n` +
+            `**4. null**: 8.2/10\n` +
+            `**5. ${getUsername('202873006773633024')}**: 7.1/10\n` +
+            `**6. ${getUsername('554128619635736601')}**: 5.2/10\n` +
+            `**7. ${getUsername('268365742636793856')}**: 3.1/10\n` +
+            `**8. ${getUsername('728442617498566666')}**: 2.2/10\n` +
+            `**9. ${getUsername('635699957080260632')}**: 1.0/10\n` +
+            `**10. ${getUsername('718860903793164450')}**: 0.2/10\n`,
+        });
+      msg.author.send(rankEmbed).catch(() => {
+        msg.react('❌');
+        return;
       });
-    msg.author.send(rankEmbed).catch(() => {
-      msg.react('❌');
-      return;
-    });
-    msg.react('756694775436148816');
-  }
+      msg.react('756694775436148816');
+    }
 
-  if(msg.content === '!ssj test') {
-    ratweewee(getRandomSfx(), msg.member, serverQueue);
-  }
+    if(args[1] === 'test') {
+      ratweewee(getRandomSfx(), msg.member, serverQueue);
+    }
+}}
 
   if (msg.webhookID || msg.channel.type === 'dm' || msg.author == null || enabled != 1) return;
 
@@ -120,6 +129,17 @@ client.on('message', (msg) => {
     if (getRandomInt(100) == 74) {
       msg.react(randEmoji.data.getEmoji());
     }
+  }
+  if(msg.channel.id == '771040254466588723') {
+    if (msg.author.bot) return;
+    let msgChannel = arg[0];
+    const sendChannel = client.guilds.cache.get('295429838041382912').channels.cache.find(channel => channel.name === msgChannel);
+    let msgText = arg.slice(1).join(' ');
+    if(!msgText || !sendChannel) return msg.react('❌');
+    //console.log(sendChannel);
+    sendChannel.send(msgText);
+    msg.react('✅');
+    //msg.reply(`*${msgText}*\n\n was sent to ${msgChannel}`);
   }
 });
 
