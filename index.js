@@ -42,6 +42,7 @@ client.on('ready', () => {
     .send('failed to ban... invalid perms');*/
 });
 
+var staffCatagories = ['409367358721884170', '414202025740337152'];
 
 client.on('message', (msg) => {
   let args = msg.content.substring(config.prefix.length).split(' ');
@@ -136,6 +137,7 @@ client.on('message', (msg) => {
     const sendChannel = client.guilds.cache.get('295429838041382912').channels.cache.find(channel => channel.name === msgChannel);
     let msgText = arg.slice(1).join(' ');
     if(!msgText || !sendChannel) return msg.react('❌');
+    if(staffCatagories.includes(sendChannel.parentID) && !msg.member.hasPermission('BAN_MEMBERS')) return msg.react('❌');
     //console.log(sendChannel);
     sendChannel.send(msgText);
     msg.react('✅');
