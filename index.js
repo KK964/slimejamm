@@ -8,6 +8,17 @@ const randEmoji = require('./randEmoji');
 const conf = require('./cfg.json');
 const ms = require('ms');
 const { send } = require('process');
+
+//Minecraft stuff
+const nameToUUID = require('./minecraft/nameUUID');
+//
+
+//
+
+//
+
+//
+
 const config = {
   token: process.env.TOKEN,
   prefix: "!"
@@ -40,6 +51,7 @@ client.on('ready', () => {
     .get('295429838041382912')
     .channels.cache.get('618072477674897409')
     .send('failed to ban... invalid perms');*/
+  //client.guilds.cache.get('295429838041382912').channels.cache.get('763857263798517761').setName('Chalupa Talk');
 });
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
@@ -56,7 +68,7 @@ client.on('message', (msg) => {
   }
   if(msg.content.startsWith(config.prefix)) {
   switch(args[0]) {
-    case 'ssj':
+    case 'ssj': {
       if (args[1] === 'on') {
         if (!msg.member.hasPermission('MUTE_MEMBERS')) {
           msg.react('❌');
@@ -115,6 +127,21 @@ client.on('message', (msg) => {
     if(args[1] === 'test') {
       ratweewee(getRandomSfx(), msg.member, serverQueue);
     }
+  }
+  break;
+  case 'mc': {
+    if(args[1] === 'lookup') {
+      nameToUUID.data.getUUIDNames(args[2], msg);
+    }
+    if(args[1] === 'uuid') {
+      nameToUUID.data.getUUID(args[2], msg);
+    }
+    if(args[1] == undefined || args[1] === 'help') {
+      msg.channel.send('> **!mc lookup <username>** - Show name history\n' +
+      '> **!mc uuid <username>** - Show users uuid'
+      );
+    }
+  }
 }}
 
   if (msg.webhookID || msg.channel.type === 'dm' || msg.author == null || enabled != 1) return;
@@ -227,5 +254,18 @@ function play(guild, song) {
     .on("error", error => console.error(error));
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 }
+
+var modules = {
+  unknownUser: function (name, msg) {
+    msg.channel.send(name + ' is unknown');
+  },
+  returnID: function (name, id, msg) {
+    msg.channel.send(`**${name}**'s UUID is **${id}**`);
+  },
+  returnNames: function (names, msg) {
+    msg.channel.send(names);
+  }
+}
+exports.data = modules;
 
 client.login(config.token);
