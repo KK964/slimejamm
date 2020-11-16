@@ -128,7 +128,6 @@ client.on('message', (msg) => {
       ratweewee(getRandomSfx(), msg.member, serverQueue);
     }
   }
-  break;
   case 'mc': {
     if(args[1] === 'lookup') {
       nameToUUID.data.getUUIDNames(args[2], msg);
@@ -140,6 +139,8 @@ client.on('message', (msg) => {
       msg.channel.send('> **!mc lookup <username>** - Show name history\n' +
       '> **!mc uuid <username>** - Show users uuid'
       );
+    } else if(args[2] == undefined) {
+      nameToUUID.data.getUUIDNames(args[1], msg);
     }
   }
 }}
@@ -255,12 +256,16 @@ function play(guild, song) {
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 }
 
+function uuidDash(uuid) {
+  return uuid.substr(0,8)+"-"+uuid.substr(8,4)+"-"+uuid.substr(12,4)+"-"+uuid.substr(16,4)+"-"+uuid.substr(20);
+}
+
 var modules = {
   unknownUser: function (name, msg) {
     msg.channel.send(name + ' is unknown');
   },
   returnID: function (name, id, msg) {
-    msg.channel.send(`**${name}**'s UUID is **${id}**`);
+    msg.channel.send(`**${name}**'s UUID is:\n> **${uuidDash(id)}**\n\n> **${id}**`);
   },
   returnNames: function (names, msg) {
     msg.channel.send(names);
