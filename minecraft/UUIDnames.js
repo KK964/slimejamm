@@ -14,7 +14,7 @@ var methods = {
                                 names.push(`${data[i].name} | ${getDate(data[i].changedToAt)} days ago`);
                             } else {
                                 if(data[i].name != null && data[i].name != undefined) {
-                                    names.push(`${data[i].name}`);
+                                    names.push(data[i].name);
                                 }
                             }
                         }
