@@ -8,8 +8,6 @@ var methods = {
   addBan: async function (server, name, time, reason, msg) {
     var uuid = await getUUID(name);
     var banTime = getDate();
-    var reason = reason | 'Unknown';
-    var server = server | 'Unknown';
     if (uuid != null) {
       if (!perms.includes(time.toLowerCase())) {
         //not perm
@@ -26,7 +24,6 @@ var methods = {
   addMute: async function (name, reason, msg) {
     var uuid = await getUUID(name);
     var muteTime = getDate();
-    var reason = reason | 'Unknown';
     if (uuid != null) {
       addMute(uuid, reason, muteTime, msg);
     } else {
