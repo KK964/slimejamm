@@ -114,10 +114,8 @@ function getBans(uuid, name, msg) {
           var date = result[i].banDate;
           var reason = result[i].reason;
           var formated = '> `' + `${server}: ${time}: ${date}: ${reason}` + '`';
-          console.log(i + ' | ' + formated);
           sendArr.push(formated);
         }
-        console.log('Sending');
         index.data.returnNames(sendArr, msg);
       } else {
         index.data.noEntries(name, msg);
@@ -140,10 +138,8 @@ function getMutes(uuid, name, msg) {
           var date = result[i].muteDate;
           var reason = result[i].reason;
           var formated = '> `' + `${date}: ${reason}` + '`';
-          console.log(i + ' | ' + formated);
           sendArr.push(formated);
         }
-        console.log('Sending');
         index.data.returnNames(sendArr, msg);
       } else {
         index.data.noEntries(name, msg);
