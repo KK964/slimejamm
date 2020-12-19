@@ -232,7 +232,7 @@ function getMutes(uuid, name, msg) {
 }
 
 function deleteID(type, id, msg) {
-  var query = 'SELECT * FROM ' + type + 's WHERE uniqueID=?';
+  var query = 'DELETE FROM ' + type + 's WHERE uniqueID=?';
   con.query(query, [id], function (err, result) {
     if (err) {
       index.data.wasError(err, msg);
