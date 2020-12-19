@@ -181,7 +181,7 @@ client.on('message', (msg) => {
           if (msg.member.permissions.has('BAN_MEMBERS')) {
             msg.channel.send(
               '> **!mc ban <server> <username> <time> <reason>** - add user to ban db\n' +
-                '> **!mc bans <username>** - get users bans' +
+                '> **!mc bans <username>** - get users bans\n' +
                 '> **!mc mute <username> <reason>** - add user to mute db\n' +
                 '> **!mc mutes <username>** - get users mutes\n'
             );
