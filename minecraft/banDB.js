@@ -52,7 +52,7 @@ var methods = {
 };
 
 function getUUID(name) {
-  return useruuid.index.data.returnUUID(name);
+  return useruuid.data.returnUUID(name);
 }
 
 function getDate() {
