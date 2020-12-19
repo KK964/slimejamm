@@ -105,6 +105,7 @@ function getBans(uuid, name, msg) {
       index.data.wasError(err, msg);
     } else {
       if (result.length > 0) {
+        index.data.success(msg);
         var sendArr = [];
         sendArr.push(name + "'s " + 'bans:\n(server, time, date, reason)');
         for (var i = 0; i <= result; i++) {
@@ -116,6 +117,8 @@ function getBans(uuid, name, msg) {
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
+      } else {
+        index.data.noEntries(name, msg);
       }
     }
   });
@@ -128,6 +131,7 @@ function getMutes(uuid, name, msg) {
       index.data.wasError(err, msg);
     } else {
       if (result.length > 0) {
+        index.data.success(msg);
         var sendArr = [];
         sendArr.push(name + "'s " + 'mutess:\n(date, reason)');
         for (var i = 0; i <= result; i++) {
@@ -137,6 +141,8 @@ function getMutes(uuid, name, msg) {
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
+      } else {
+        index.data.noEntries(name, msg);
       }
     }
   });
