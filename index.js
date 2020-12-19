@@ -309,17 +309,21 @@ function play(guild, song) {
 }
 
 function uuidDash(uuid) {
-  return (
-    uuid.substr(0, 8) +
-    '-' +
-    uuid.substr(8, 4) +
-    '-' +
-    uuid.substr(12, 4) +
-    '-' +
-    uuid.substr(16, 4) +
-    '-' +
-    uuid.substr(20)
-  );
+  if (!uuid || uuid == undefined) {
+    return 'Undefined';
+  } else {
+    return (
+      uuid.substr(0, 8) +
+      '-' +
+      uuid.substr(8, 4) +
+      '-' +
+      uuid.substr(12, 4) +
+      '-' +
+      uuid.substr(16, 4) +
+      '-' +
+      uuid.substr(20)
+    );
+  }
 }
 
 var modules = {
