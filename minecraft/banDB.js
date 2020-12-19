@@ -17,7 +17,7 @@ var methods = {
         addBan(uuid, server, reason, banTime, unBanTime, time, msg);
       } else {
         //perm
-        addBan(uuid, server, reason, banTime, 'null', 'null', msg);
+        addBan(uuid, server, reason, banTime, 'null', 'Perm', msg);
       }
     } else {
       index.data.unknownUser(name, msg);
@@ -62,9 +62,9 @@ function getDate() {
 }
 
 function getNextDate(time) {
-  var nowDateMS = new Date().getMilliseconds();
-  var nextDateMS = nowDateMS + ms(time);
-  return new Date(nextDateMS).toISOString().slice(0, 19).replace('T', ' ');
+  const nextDateMS = Date.now() + ms(time);
+  const dateObject = new Date(nextDateMS);
+  return dateObject.toISOString().slice(0, 19).replace('T', ' ');
 }
 
 const mysql = require('mysql');
@@ -107,13 +107,14 @@ function getBans(uuid, name, msg) {
       if (result.length > 0) {
         index.data.success(msg);
         var sendArr = [];
-        sendArr.push(name + "'s " + 'bans:\n(server, time, date, reason)');
+        sendArr.push(name + "'s " + 'bans:\n(server, time, reason, date - unban date)');
         for (var i = 0; i < result.length; i++) {
           var server = result[i].server;
           var time = result[i].time;
           var date = result[i].banDate;
+          var unbanDate = result[i].unban;
           var reason = result[i].reason;
-          var formated = '> `' + `${server}: ${time}: ${date}: ${reason}` + '`';
+          var formated = '> `' + `${server}: ${time}: ${reason}: ${date} - ${unbanDate}` + '`';
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
