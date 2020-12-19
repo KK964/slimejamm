@@ -146,7 +146,7 @@ client.on('message', (msg) => {
           let server = args[2];
           let username = args[3];
           let time = args[4];
-          let reason = args.slice(0, 4).join(' ');
+          let reason = args.splice(0, 4).join(' ');
           bans.data.addBan(server, username, time, reason, msg);
         }
         if (args[1] === 'mute') {
@@ -154,7 +154,7 @@ client.on('message', (msg) => {
           if (args[2] == undefined || args[3] == undefined)
             return msg.channel.send('> **!mc mute <username> <reason>\n');
           let username = args[2];
-          let reason = args.slice(0, 2).join(' ');
+          let reason = args.splice(0, 2).join(' ');
           bans.data.addMute(username, reason, msg);
         }
         if (args[1] === 'bans') {
