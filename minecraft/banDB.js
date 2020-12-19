@@ -20,7 +20,7 @@ var methods = {
         addBan(uuid, server, reason, banTime, 'null', 'null', msg);
       }
     } else {
-      index.data.unknownUser(msg);
+      index.data.unknownUser(name, msg);
     }
   },
   addMute: function (name, reason, msg) {
@@ -30,7 +30,7 @@ var methods = {
     if (uuid != null) {
       addMute(uuid, reason, muteTime, msg);
     } else {
-      index.data.unknownUser(msg);
+      index.data.unknownUser(name, msg);
     }
   },
   getBans: function (name, msg) {
