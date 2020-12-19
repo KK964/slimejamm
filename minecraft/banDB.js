@@ -105,8 +105,9 @@ function getBans(uuid, name, msg) {
       if (result.length > 0) {
         index.data.success(msg);
         var sendArr = [];
-        sendArr.push(name + "'s " + 'bans:\n(server, time, reason, date - unban date)');
+        sendArr.push(name + "'s " + 'bans:\n(ID, server, time, reason, date - unban date)');
         for (var i = 0; i < result.length; i++) {
+          var uniqueID = result[i].uniqueID;
           var server = result[i].server;
           var time = result[i].time;
           var date = String(result[i].banDate).split(' ');
@@ -119,7 +120,12 @@ function getBans(uuid, name, msg) {
             unbanDate = 'Forever';
           }
           var reason = result[i].reason;
-          var formated = '> `' + `${server}: ${time}: ${reason}: ${date} - ${unbanDate}` + '`';
+          var formated =
+            '> **' +
+            uniqueID +
+            '**`' +
+            `${server}: ${time}: ${reason}: ${date} - ${unbanDate}` +
+            '`';
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
@@ -139,13 +145,14 @@ function getMutes(uuid, name, msg) {
       if (result.length > 0) {
         index.data.success(msg);
         var sendArr = [];
-        sendArr.push(name + "'s " + 'mutess:\n(date, reason)');
+        sendArr.push(name + "'s " + 'mutes:\n(ID, date, reason)');
         for (var i = 0; i < result.length; i++) {
+          var uniqueID = result[i].uniqueID;
           var date = String(result[i].muteDate).split(' ');
           date.splice(4, 8).shift(2);
           date.join(' ');
           var reason = result[i].reason;
-          var formated = '> `' + `${date}: ${reason}` + '`';
+          var formated = '> **' + uniqueID + '**`' + `${date}: ${reason}` + '`';
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
