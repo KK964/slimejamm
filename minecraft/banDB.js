@@ -115,6 +115,9 @@ function getBans(uuid, name, msg) {
           var unbanDate = String(result[i].unban).split(' ');
           unbanDate.splice(4, 8).shift(2);
           unbanDate.join(' ');
+          if (unbanDate == '0000-00-00,00:00:00') {
+            unbanDate = 'Forever';
+          }
           var reason = result[i].reason;
           var formated = '> `' + `${server}: ${time}: ${reason}: ${date} - ${unbanDate}` + '`';
           sendArr.push(formated);
