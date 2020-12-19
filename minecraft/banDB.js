@@ -63,7 +63,7 @@ function getDate() {
 
 function getNextDate(time) {
   var nowDateMS = new Date().getMilliseconds();
-  var nextDateMS = (nowDateMS + ms(time)) | nowDateMS;
+  var nextDateMS = nowDateMS + ms(time);
   return new Date(nextDateMS).toISOString().slice(0, 19).replace('T', ' ');
 }
 
@@ -107,11 +107,11 @@ function getBans(uuid, name, msg) {
       if (result.length > 0) {
         var sendArr = [];
         sendArr.push(name + "'s " + 'bans:\n(server, time, date, reason)');
-        for (res in result) {
-          var server = res.server;
-          var time = res.time;
-          var date = res.banDate;
-          var reason = res.reason;
+        for (var i = 0; i <= result; i++) {
+          var server = res[i].server;
+          var time = res[i].time;
+          var date = res[i].banDate;
+          var reason = res[i].reason;
           var formated = '> `' + `${server}: ${time}: ${date}: ${reason}` + '`';
           sendArr.push(formated);
         }
@@ -130,9 +130,9 @@ function getMutes(uuid, name, msg) {
       if (result.length > 0) {
         var sendArr = [];
         sendArr.push(name + "'s " + 'mutess:\n(date, reason)');
-        for (res in result) {
-          var date = res.banDate;
-          var reason = res.reason;
+        for (var i = 0; i <= result; i++) {
+          var date = res[i].muteDate;
+          var reason = res[i].reason;
           var formated = '> `' + `${date}: ${reason}` + '`';
           sendArr.push(formated);
         }
