@@ -7,7 +7,7 @@ var methods = {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.indexOf('application/json') !== -1) {
         response.json().then((data) => {
-          getNanes.index.data.getNames(name, data.id, msg);
+          getNanes.data.getNames(name, data.id, msg);
         });
       } else {
         index.data.unknownUser(name, msg);
