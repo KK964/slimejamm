@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { data } = require('../index');
+const index = require('../index');
 var methods = {
   getNames: function (name, uuid, msg) {
     var names = [];
@@ -26,10 +26,10 @@ var methods = {
           if (!names.length == null) {
             names.push(name);
           }
-          data.returnNames(names, msg);
+          index.data.returnNames(names, msg);
         });
       } else {
-        data.unknownUser(name, msg);
+        index.data.unknownUser(name, msg);
       }
     });
   },
