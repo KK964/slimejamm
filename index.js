@@ -146,7 +146,8 @@ client.on('message', (msg) => {
           let server = args[2];
           let username = args[3];
           let time = args[4];
-          let reason = args.splice(0, 4).join(' ');
+          args.splice(0, 4).join(' ');
+          let reason = args;
           bans.data.addBan(server, username, time, reason, msg);
         }
         if (args[1] === 'mute') {
