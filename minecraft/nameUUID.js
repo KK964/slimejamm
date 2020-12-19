@@ -7,7 +7,7 @@ var methods = {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.indexOf('application/json') !== -1) {
         response.json().then((data) => {
-          getNanes.index.data.getNames(name, index.data.id, msg);
+          getNanes.index.data.getNames(name, data.id, msg);
         });
       } else {
         index.data.unknownUser(name, msg);
@@ -19,7 +19,7 @@ var methods = {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.indexOf('application/json') !== -1) {
         response.json().then((data) => {
-          index.data.returnID(name, index.data.id, msg);
+          index.data.returnID(name, data.id, msg);
         });
       } else {
         index.data.unknownUser(name, msg);
@@ -31,7 +31,7 @@ var methods = {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.indexOf('application/json') !== -1) {
         response.json().then((data) => {
-          return index.data.id;
+          return data.id;
         });
       } else {
         return null;
