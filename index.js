@@ -147,6 +147,7 @@ client.on('message', (msg) => {
           let username = args[3];
           let time = args[4];
           let reason = args.slice(0, 4).join();
+          msg.channel.send(`${server}, ${username}, ${time}, ${reason}`);
           bans.data.addBan(server, username, time, reason, msg);
         }
         if (args[1] === 'mute') {
