@@ -65,14 +65,14 @@ var methods = {
     }
   },
   delete: function (type, id, msg) {
-    if (!id) {
+    if (id) {
       if (types.includes(type.toLowerCase())) {
         deleteID(type.toLowerCase(), id, msg);
       } else {
         index.data.sendOtherMsg(`The type "${type}" is unknown\n> !mc delete <type> <id>`, msg);
       }
     } else {
-      index.data.sendOtherMsg(`The id "${id} is unknown\n> !mc delete <type> <id>`, msg);
+      index.data.sendOtherMsg(`The id "${id}" is unknown\n> !mc delete <type> <id>`, msg);
     }
   },
 };
