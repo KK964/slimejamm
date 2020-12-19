@@ -5,8 +5,8 @@ var perms = ['perm', 'permanent', 'p'];
 var index = require('../index');
 
 var methods = {
-  addBan: function (server, name, time, reason, msg) {
-    var uuid = getUUID(name);
+  addBan: async function (server, name, time, reason, msg) {
+    var uuid = await getUUID(name);
     var banTime = getDate();
     var reason = reason | 'Unknown';
     var server = server | 'Unknown';
@@ -23,8 +23,8 @@ var methods = {
       index.data.unknownUser(name, msg);
     }
   },
-  addMute: function (name, reason, msg) {
-    var uuid = getUUID(name);
+  addMute: async function (name, reason, msg) {
+    var uuid = await getUUID(name);
     var muteTime = getDate();
     var reason = reason | 'Unknown';
     if (uuid != null) {
@@ -33,16 +33,16 @@ var methods = {
       index.data.unknownUser(name, msg);
     }
   },
-  getBans: function (name, msg) {
-    var uuid = getUUID(name);
+  getBans: async function (name, msg) {
+    var uuid = await getUUID(name);
     if (uuid != null) {
       getBans(uuid, name, msg);
     } else {
       index.data.unknownUser(name, msg);
     }
   },
-  getMutes: function (name, msg) {
-    var uuid = getUUID(name);
+  getMutes: async function (name, msg) {
+    var uuid = await getUUID(name);
     if (uuid != null) {
       getMutes(uuid, name, msg);
     } else {
@@ -52,7 +52,9 @@ var methods = {
 };
 
 function getUUID(name) {
-  return useruuid.data.returnUUID(name);
+  return new Promise((res, rej) => {
+    res(useruuid.data.returnUUID(name));
+  });
 }
 
 function getDate() {

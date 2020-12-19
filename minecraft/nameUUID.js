@@ -27,15 +27,17 @@ var methods = {
     });
   },
   returnUUID: function (name) {
-    fetch(`https://api.mojang.com/users/profiles/minecraft/${name}`).then((response) => {
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.indexOf('application/json') !== -1) {
-        response.json().then((data) => {
-          return data.id;
-        });
-      } else {
-        return null;
-      }
+    return new Promise(function (res, rej) {
+      fetch(`https://api.mojang.com/users/profiles/minecraft/${name}`).then((response) => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.indexOf('application/json') !== -1) {
+          response.json().then((data) => {
+            res(data.id);
+          });
+        } else {
+          res(null);
+        }
+      });
     });
   },
 };
