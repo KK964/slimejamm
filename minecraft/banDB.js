@@ -109,10 +109,10 @@ function getBans(uuid, name, msg) {
         for (var i = 0; i < result.length; i++) {
           var server = result[i].server;
           var time = result[i].time;
-          var date = result[i].banDate.split(' ').slice(6, 8).shift();
-          var unbanDate = result[i].unban.split(' ').slice(6, 8).shift();
+          var date = result[i].banDate;
+          var unbanDate = result[i].unban;
           var reason = result[i].reason;
-          var formated = '> `' + `${server}: ${time}: ${reason}: ${date} - ${unbanDate}` + '`';
+          var formated = '> `' + `${server}: ${time}: ${reason}: ${date.split(' ').slice(6, 8).shift()} - ${unbanDate.split(' ').slice(6, 8).shift()}` + '`';
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
@@ -134,9 +134,9 @@ function getMutes(uuid, name, msg) {
         var sendArr = [];
         sendArr.push(name + "'s " + 'mutess:\n(date, reason)');
         for (var i = 0; i < result.length; i++) {
-          var date = result[i].muteDate.split(' ').slice(6, 8).shift();
+          var date = result[i].muteDate;
           var reason = result[i].reason;
-          var formated = '> `' + `${date}: ${reason}` + '`';
+          var formated = '> `' + `${date.split(' ').slice(6, 8).shift();}: ${reason}` + '`';
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);
