@@ -142,7 +142,7 @@ client.on('message', (msg) => {
         if (args[1] === 'ban') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined || args[4] == undefined)
-            return msg.channel.send('> **!mc ban <server> <username> <time|p|perm> <reason>\n');
+            return msg.channel.send('> !mc ban <server> <username> <time|p|perm> <reason>');
           let server = args[2];
           let username = args[3];
           let time = args[4];
@@ -153,25 +153,47 @@ client.on('message', (msg) => {
         if (args[1] === 'mute') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined)
-            return msg.channel.send('> **!mc mute <username> <reason>\n');
+            return msg.channel.send('> !mc mute <username> <reason>');
           let username = args[2];
           args.splice(0, 3);
           let reason = args.join(' ');
           bans.data.addMute(username, reason, msg);
         }
+        if (args[1] == 'warn') {
+          if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
+          if (args[2] == undefined || args[3] == undefined || args[4] == undefined)
+            return msg.channel.send('> !mc warn <server> <username> <reason>');
+          let server = args[2];
+          let username = args[3];
+          args.splice(0, 4);
+          let reason = args.join(' ');
+          bans.data.addWarn(server, username, reason, msg);
+        }
         if (args[1] === 'bans') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
-          if (args[2] == undefined)
-            return msg.channel.send('> **!mc bans <username>** - get users bans');
+          if (args[2] == undefined) return msg.channel.send('> !mc bans <username>');
           let username = args[2];
           bans.data.getBans(username, msg);
         }
         if (args[1] === 'mutes') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
-          if (args[2] == undefined)
-            return msg.channel.send('> **!mc mutes <username>** - get users mutes');
+          if (args[2] == undefined) return msg.channel.send('> !mc mutes <username>');
           let username = args[2];
           bans.data.getMutes(username, msg);
+        }
+        if (args[1] === 'warns') {
+          if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
+          if (args[2] == undefined) return msg.channel.send('> !mc warns <username>');
+          let username = args[2];
+          bans.data.getWarns(username, msg);
+        }
+        if (args[1] === 'delete') {
+          if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
+          if (args[2] == undefined || args[3] == undefined)
+            return msg.channel.send('> !mc delete <type> <id>');
+          let type = args[2];
+          let id = args[3];
+          bans.data.delete(type, id, msg);
         }
         if (args[1] == undefined || args[1] === 'help') {
           msg.channel.send(
@@ -183,7 +205,10 @@ client.on('message', (msg) => {
               '> **!mc ban <server> <username> <time> <reason>** - add user to ban db\n' +
                 '> **!mc bans <username>** - get users bans\n' +
                 '> **!mc mute <username> <reason>** - add user to mute db\n' +
-                '> **!mc mutes <username>** - get users mutes\n'
+                '> **!mc mutes <username>** - get users mutes\n' +
+                '> **!mc warn <server> <username> <reason>** - add user to warn db\n' +
+                '> **!mc warns <username>** - get users warns\n' +
+                '> **!mc delete <type> <id>** - delete from db\n'
             );
           }
         } else if (args[2] == undefined) {
@@ -346,6 +371,9 @@ var modules = {
   },
   success: function (msg) {
     msg.react('✅');
+  },
+  sendOtherMsg: function (message, msg) {
+    msg.channel.send(message);
   },
 };
 exports.data = modules;
