@@ -76,6 +76,7 @@ var con = mysql.createConnection({
 });
 
 function addBan(uuid, server, reason, date, unban, time, msg) {
+  console.log(`${uuid}, ${server}, ${reason}, ${date}, ${unban}, ${time}`);
   var query =
     'INSERT INTO bans (uuid, server, reason, banDate, unban, time) VALUES (?, ?, ?, ?, ?, ?)';
   con.query(query, [uuid, server, reason, date, unban, time], function (err, result) {
