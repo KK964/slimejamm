@@ -208,7 +208,8 @@ client.on('message', (msg) => {
                 '> **!mc mutes <username>** - get users mutes\n' +
                 '> **!mc warn <server> <username> <reason>** - add user to warn db\n' +
                 '> **!mc warns <username>** - get users warns\n' +
-                '> **!mc delete <type> <id>** - delete from db\n'
+                '> **!mc delete <type> <id>** - delete from db\n\n' +
+                '> Time examples: *normal bans: 1d, 4d... | perm bans: p, perm, or permanent*'
             );
           }
         } else if (args[2] == undefined) {
