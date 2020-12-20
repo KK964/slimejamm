@@ -142,58 +142,84 @@ client.on('message', (msg) => {
         if (args[1] === 'ban') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined || args[4] == undefined)
-            return msg.channel.send('> !mc ban <server> <username> <time|p|perm> <reason>');
+            return msg.channel
+              .send('> !mc ban <server> <username> <time|p|perm> <reason>')
+              .then((msg) => {
+                msg.delete({ timeout: 10000 });
+              });
           let server = args[2];
           let username = args[3];
           let time = args[4];
           args.splice(0, 5);
           let reason = args.join(' ');
           bans.data.addBan(server, username, time, reason, msg);
+          return;
         }
         if (args[1] === 'mute') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined)
-            return msg.channel.send('> !mc mute <username> <reason>');
+            return msg.channel.send('> !mc mute <username> <reason>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
           let username = args[2];
           args.splice(0, 3);
           let reason = args.join(' ');
           bans.data.addMute(username, reason, msg);
+          return;
         }
         if (args[1] == 'warn') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined || args[4] == undefined)
-            return msg.channel.send('> !mc warn <server> <username> <reason>');
+            return msg.channel.send('> !mc warn <server> <username> <reason>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
           let server = args[2];
           let username = args[3];
           args.splice(0, 4);
           let reason = args.join(' ');
           bans.data.addWarn(server, username, reason, msg);
+          return;
         }
         if (args[1] === 'bans') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
-          if (args[2] == undefined) return msg.channel.send('> !mc bans <username>');
+          if (args[2] == undefined)
+            return msg.channel.send('> !mc bans <username>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
           let username = args[2];
           bans.data.getBans(username, msg);
+          return;
         }
         if (args[1] === 'mutes') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
-          if (args[2] == undefined) return msg.channel.send('> !mc mutes <username>');
+          if (args[2] == undefined)
+            return msg.channel.send('> !mc mutes <username>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
           let username = args[2];
           bans.data.getMutes(username, msg);
+          return;
         }
         if (args[1] === 'warns') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
-          if (args[2] == undefined) return msg.channel.send('> !mc warns <username>');
+          if (args[2] == undefined)
+            return msg.channel.send('> !mc warns <username>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
           let username = args[2];
           bans.data.getWarns(username, msg);
+          return;
         }
         if (args[1] === 'delete') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined)
-            return msg.channel.send('> !mc delete <type> <id>');
+            return msg.channel.send('> !mc delete <type> <id>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
           let type = args[2];
           let id = args[3];
           bans.data.delete(type, id, msg);
+          return;
         }
         if (args[1] == undefined || args[1] === 'help') {
           msg.channel.send(
