@@ -222,7 +222,7 @@ function getMutes(uuid, name, msg) {
   });
 }
 
-function getMutes(uuid, name, msg) {
+function getWarns(uuid, name, msg) {
   var query = 'SELECT * FROM warns WHERE uuid=?';
   con.query(query, [uuid], function (err, result) {
     if (err) {
