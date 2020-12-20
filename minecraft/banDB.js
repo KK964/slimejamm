@@ -94,12 +94,31 @@ function getNextDate(time) {
 }
 
 const mysql = require('mysql');
-var con = mysql.createConnection({
+var dbconfig = {
   host: mysqlConf.host,
   user: mysqlConf.user,
   password: mysqlConf.password,
   database: mysqlConf.database,
-});
+};
+var con;
+function handleDisconnect() {
+  con = mysql.createConnection(dbconfig);
+  con.connect((err) => {
+    if (err) {
+      console.log('Error connecting to database... retrying connection');
+      setTimeout(handleDisconnect(), 2000);
+    }
+  });
+
+  con.on('error', (err) => {
+    console.log('Database error: ' + err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
 
 function addBan(uuid, server, reason, date, unban, time, msg) {
   console.log(`${uuid}, ${server}, ${reason}, ${date}, ${unban}, ${time}`);
@@ -242,4 +261,5 @@ function deleteID(type, id, msg) {
   });
 }
 
+handleDisconnect();
 exports.data = methods;
