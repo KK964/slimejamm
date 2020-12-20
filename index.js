@@ -400,7 +400,9 @@ var modules = {
     msg.react('✅');
   },
   sendOtherMsg: function (message, msg) {
-    msg.channel.send(message);
+    msg.channel.send(message).then((msg) => {
+      msg.delete({ timeout: 10000 });
+    });
   },
 };
 exports.data = modules;
