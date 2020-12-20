@@ -210,6 +210,17 @@ client.on('message', (msg) => {
           bans.data.getWarns(username, msg);
           return;
         }
+        if (args[1] === 'all') {
+          if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
+          if (args[2] == undefined)
+            return msg.channel.send('> !mc all <username>').then((msg) => {
+              msg.delete({ timeout: 10000 });
+            });
+          let username = args[2];
+          bans.data.getBans(username, msg);
+          bans.data.getMutes(username, msg);
+          bans.data.getWarns(username, msg);
+        }
         if (args[1] === 'delete') {
           if (!msg.member.permissions.has('BAN_MEMBERS')) return msg.react('❌');
           if (args[2] == undefined || args[3] == undefined)
@@ -234,6 +245,7 @@ client.on('message', (msg) => {
                 '> **!mc mutes <username>** - get users mutes\n' +
                 '> **!mc warn <server> <username> <reason>** - add user to warn db\n' +
                 '> **!mc warns <username>** - get users warns\n' +
+                '> **!mc all <username>** - get users bans, mutes, warns\n' +
                 '> **!mc delete <type> <id>** - delete from db\n\n' +
                 '> Time examples: *normal bans: 1d, 4d... | perm bans: p, perm, or permanent*'
             );
