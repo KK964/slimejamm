@@ -3,7 +3,7 @@ var mysqlConf = require('./mysqlconf.json');
 const Discord = require('discord.js');
 var ms = require('ms');
 var perms = ['perm', 'permanent', 'p'];
-var types = ['ban', 'mute', 'warn'];
+var types = ['ban', 'mute', 'warn', 'kick'];
 var index = require('../index');
 
 var methods = {
