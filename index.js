@@ -46,7 +46,6 @@ var staffCatagories = ['409367358721884170', '414202025740337152'];
 client.on('message', (msg) => {
   let args = msg.content.substring(config.prefix.length).split(' ');
   let arg = msg.content.split(' ');
-  const serverQueue = queue.get(client.guilds.cache.get('295429838041382912').id);
   if (msg.channel.id == '615023024260775946') {
     if (msg.member.user.bot) return;
     msg.react('✅').then(msg.react('❌'));
