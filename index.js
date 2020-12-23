@@ -103,6 +103,7 @@ client.on('message', (msg) => {
             let time = args[4];
             args.splice(0, 5);
             let reason = args.join(' ');
+            reason = reason.replace(/(\r\n|\n|\r)/gm, ' ');
             bans.data.addBan(server, username, time, reason, msg);
             return;
           }
@@ -115,6 +116,7 @@ client.on('message', (msg) => {
             let username = args[3];
             args.splice(0, 4);
             let reason = args.join(' ');
+            reason = reason.replace(/(\r\n|\n|\r)/gm, ' ');
             bans.data.addKick(username, server, reason, msg);
             return;
           }
@@ -126,6 +128,7 @@ client.on('message', (msg) => {
             let username = args[2];
             args.splice(0, 3);
             let reason = args.join(' ');
+            reason = reason.replace(/(\r\n|\n|\r)/gm, ' ');
             bans.data.addMute(username, reason, msg);
             return;
           }
@@ -138,6 +141,7 @@ client.on('message', (msg) => {
             let username = args[3];
             args.splice(0, 4);
             let reason = args.join(' ');
+            reason = reason.replace(/(\r\n|\n|\r)/gm, ' ');
             bans.data.addWarn(server, username, reason, msg);
             return;
           }
