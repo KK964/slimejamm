@@ -25,9 +25,9 @@ var methods = {
   },
   addKick: async function (name, server, reason, msg) {
     var uuid = await getUUID(name);
-    var muteTime = getDate();
+    var kickTime = getDate();
     if (uuid != null) {
-      addKick(uuid, server, reason, muteTime, msg);
+      addKick(uuid, server, reason, kickTime, msg);
     } else {
       index.data.unknownUser(name, msg);
     }
@@ -152,7 +152,7 @@ function addBan(uuid, server, reason, date, unban, time, msg) {
 }
 
 function addKick(uuid, server, reason, date, msg) {
-  var query = 'INSERT INTO kicks (uuid, server, reason, muteDate) VALUES (?, ?, ?, ?)';
+  var query = 'INSERT INTO kicks (uuid, server, reason, kickDate) VALUES (?, ?, ?, ?)';
   con.query(query, [uuid, server, reason, date], function (err, result) {
     if (err) {
       index.data.wasError(err, msg);
