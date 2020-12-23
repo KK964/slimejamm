@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const wait = require('util').promisify(setTimeout);
 const fs = require('fs');
-require('dotenv-flow').config();
 const randEmoji = require('./randEmoji');
 const bans = require('./minecraft/banDB');
 const conf = require('./cfg.json');
@@ -40,16 +39,6 @@ client.on('ready', () => {
     },
     status: 'online',
   });
-  //const channel = console.log(client.guilds.cache.get('295429838041382912').channels.cache.get('713215253160263732'));
-  /*client.guilds.cache
-    .get('295429838041382912')
-    .channels.cache.get('295429838041382912')
-    .stopTyping();
-  client.guilds.cache
-    .get('295429838041382912')
-    .channels.cache.get('618072477674897409')
-    .send('failed to ban... invalid perms');*/
-  //client.guilds.cache.get('295429838041382912').channels.cache.get('763857263798517761').setName('Chalupa Talk');
 });
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
