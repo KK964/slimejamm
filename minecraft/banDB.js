@@ -23,6 +23,15 @@ var methods = {
       index.data.unknownUser(name, msg);
     }
   },
+  addKick: async function (name, server, reason, msg) {
+    var uuid = await getUUID(name);
+    var muteTime = getDate();
+    if (uuid != null) {
+      addKick(uuid, server, reason, muteTime, msg);
+    } else {
+      index.data.unknownUser(name, msg);
+    }
+  },
   addMute: async function (name, reason, msg) {
     var uuid = await getUUID(name);
     var muteTime = getDate();
@@ -45,6 +54,14 @@ var methods = {
     var uuid = await getUUID(name);
     if (uuid != null) {
       getBans(uuid, name, msg);
+    } else {
+      index.data.unknownUser(name, msg);
+    }
+  },
+  getKicks: async function (name, msg) {
+    var uuid = await getUUID(name);
+    if (uuid != null) {
+      getKicks(uuid, name, msg);
     } else {
       index.data.unknownUser(name, msg);
     }
@@ -134,6 +151,17 @@ function addBan(uuid, server, reason, date, unban, time, msg) {
   });
 }
 
+function addKick(uuid, server, reason, date, msg) {
+  var query = 'INSERT INTO kicks (uuid, server, reason, muteDate) VALUES (?, ?, ?, ?)';
+  con.query(query, [uuid, server, reason, date], function (err, result) {
+    if (err) {
+      index.data.wasError(err, msg);
+    } else {
+      index.data.success(msg);
+    }
+  });
+}
+
 function addMute(uuid, reason, date, msg) {
   var query = 'INSERT INTO mutes (uuid, reason, muteDate) VALUES (?, ?, ?)';
   con.query(query, [uuid, reason, date], function (err, result) {
@@ -186,6 +214,34 @@ function getBans(uuid, name, msg) {
             '**: `' +
             `${server}: ${time}: ${reason}: ${date} - ${unbanDate}` +
             '`';
+          sendArr.push(formated);
+        }
+        index.data.returnNames(sendArr, msg);
+      } else {
+        index.data.noEntries(name, msg);
+      }
+    }
+  });
+}
+
+function getKicks(uuid, name, msg) {
+  var query = 'SELECT * FROM kicks WHERE uuid=?';
+  con.query(query, [uuid], function (err, result) {
+    if (err) {
+      index.data.wasError(err, msg);
+    } else {
+      if (result.length > 0) {
+        index.data.success(msg);
+        var sendArr = [];
+        sendArr.push(name + "'s " + 'kicks:\n(ID, server, date, reason)');
+        for (var i = 0; i < result.length; i++) {
+          var uniqueID = result[i].uniqueID;
+          var server = result[i].server;
+          var date = String(result[i].muteDate).split(' ');
+          date.splice(4, 8).shift(2);
+          date.join(' ');
+          var reason = result[i].reason;
+          var formated = '> **' + uniqueID + '**: `' + `${server}: ${date}: ${reason}` + '`';
           sendArr.push(formated);
         }
         index.data.returnNames(sendArr, msg);

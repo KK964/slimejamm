@@ -82,31 +82,6 @@ client.on('message', (msg) => {
             .then(console.log)
             .catch(console.error);
         }
-        if (args[1] === `results`) {
-          const rankEmbed = new Discord.MessageEmbed()
-            .setColor('#fcba03')
-            .setAuthor(client.user.username, client.user.avatarURL())
-            .setTitle('SJ Shipping Sim Results')
-            .addFields({
-              name: 'Results',
-              value:
-                `**1. ${getUsername('295483724429262848')}**: 9.8/10\n` +
-                `**2. ${getUsername('295279743480365066')}**: 9.0\n` +
-                `**3. ${getUsername('276543437241843713')}**: 8.7/10\n` +
-                `**4. null**: 8.2/10\n` +
-                `**5. ${getUsername('202873006773633024')}**: 7.1/10\n` +
-                `**6. ${getUsername('554128619635736601')}**: 5.2/10\n` +
-                `**7. ${getUsername('268365742636793856')}**: 3.1/10\n` +
-                `**8. ${getUsername('728442617498566666')}**: 2.2/10\n` +
-                `**9. ${getUsername('635699957080260632')}**: 1.0/10\n` +
-                `**10. ${getUsername('718860903793164450')}**: 0.2/10\n`,
-            });
-          msg.author.send(rankEmbed).catch(() => {
-            msg.react('❌');
-            return;
-          });
-          msg.react('756694775436148816');
-        }
       }
       case 'mc': {
         if (args[1] === 'lookup') {
@@ -129,6 +104,18 @@ client.on('message', (msg) => {
             args.splice(0, 5);
             let reason = args.join(' ');
             bans.data.addBan(server, username, time, reason, msg);
+            return;
+          }
+          if (args[1] === 'kick') {
+            if (args[2] == undefined || args[3] == undefined)
+              return msg.channel.send('> !mc kick <server> <username> <reason>').then((msg) => {
+                msg.delete({ timeout: 10000 });
+              });
+            let server = args[2];
+            let username = args[3];
+            args.splice(0, 4);
+            let reason = args.join(' ');
+            bans.data.addMute(username, server, reason, msg);
             return;
           }
           if (args[1] === 'mute') {
@@ -163,6 +150,15 @@ client.on('message', (msg) => {
             bans.data.getBans(username, msg);
             return;
           }
+          if (args[1] === 'kicks') {
+            if (args[2] == undefined)
+              return msg.channel.send('> !mc kicks <username>').then((msg) => {
+                msg.delete({ timeout: 10000 });
+              });
+            let username = args[2];
+            bans.data.getKicks(username, msg);
+            return;
+          }
           if (args[1] === 'mutes') {
             if (args[2] == undefined)
               return msg.channel.send('> !mc mutes <username>').then((msg) => {
@@ -188,6 +184,7 @@ client.on('message', (msg) => {
               });
             let username = args[2];
             bans.data.getBans(username, msg);
+            bans.data.getKicks(username, msg);
             bans.data.getMutes(username, msg);
             bans.data.getWarns(username, msg);
           }
@@ -211,11 +208,13 @@ client.on('message', (msg) => {
             msg.channel.send(
               '> **!mc ban <server> <username> <time> <reason>** - add user to ban db\n' +
                 '> **!mc bans <username>** - get users bans\n' +
+                '> **!mc kick <server> <username> <reason>** - add user to kick db\n' +
+                '> **!mc kicks <username>** - get users kicks\n' +
                 '> **!mc mute <username> <reason>** - add user to mute db\n' +
                 '> **!mc mutes <username>** - get users mutes\n' +
                 '> **!mc warn <server> <username> <reason>** - add user to warn db\n' +
                 '> **!mc warns <username>** - get users warns\n' +
-                '> **!mc all <username>** - get users bans, mutes, warns\n' +
+                '> **!mc all <username>** - get users bans, kicks, mutes, warns (warn: spam)\n' +
                 '> **!mc delete <type> <id>** - delete from db\n\n' +
                 '> Time examples: *normal bans: 1d, 4d... | perm bans: p, perm, or permanent*'
             );
