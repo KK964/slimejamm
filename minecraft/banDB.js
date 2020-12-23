@@ -1,5 +1,6 @@
 var useruuid = require('./nameUUID');
 var mysqlConf = require('./mysqlconf.json');
+const Discord = require('discord.js');
 var ms = require('ms');
 var perms = ['perm', 'permanent', 'p'];
 var types = ['ban', 'mute', 'warn'];
