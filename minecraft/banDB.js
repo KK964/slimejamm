@@ -124,7 +124,9 @@ function handleDisconnect() {
   con.connect((err) => {
     if (err) {
       console.log('Error connecting to database... retrying connection');
-      setTimeout(handleDisconnect(), 2000);
+      setTimeout(() => {
+        handleDisconnect();
+      }, 2000);
     }
   });
 

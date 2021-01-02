@@ -90,6 +90,13 @@ client.on('message', (msg) => {
         if (args[1] === 'uuid') {
           nameToUUID.data.getUUID(args[2], msg);
         }
+        if (args[1] === 'skull') {
+          if (!args[2] || !args[3]) return msg.channel.send('!mc skull <url> <name of skull>');
+          var url = args[2];
+          args.splice(0, 3);
+          var name = args.join(' ');
+          return generateSkull(name, url, msg);
+        }
         if (msg.channel.parentID == '414202025740337152') {
           if (args[1] === 'ban') {
             if (args[2] == undefined || args[3] == undefined || args[4] == undefined)
@@ -269,6 +276,18 @@ function uuidDash(uuid) {
       uuid.substr(20)
     );
   }
+}
+
+function generateSkull(name, url, msg) {
+  var toEncrypt = '{"textures":{"SKIN":{"url":"' + url + '"}}}';
+  var encryptedUrl = Buffer.from(toEncrypt).toString('base64');
+  var giveCmd =
+    '/give @p player_head{SkullOwner:{Id:"314d6164-6520-6279-2052-756e61696963",Name:"' +
+    name +
+    '",Properties:{textures:[{Value:"' +
+    encryptedUrl +
+    '"}]}}}';
+  msg.channel.send('`' + giveCmd + '`');
 }
 
 var modules = {
