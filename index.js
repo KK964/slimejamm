@@ -53,7 +53,7 @@ client.on('message', (msg) => {
     msg.react('✅').then(msg.react('❌'));
   }
   if (msg.member && client.spamMap.has(msg.member.id)) {
-    msg.reply('Okay stopping');
+    msg.reply('Okay stopping').then((msg2) => msg2.delete({ timeout: 10000 }));
     client.spamMap.delete(msg.member.id);
   }
   if (msg.content.startsWith(config.prefix)) {
@@ -62,7 +62,7 @@ client.on('message', (msg) => {
         if (args[1] === 'spam') {
           if (!msg.member.hasPermission('BAN_MEMBERS')) return;
           var member = msg.guild.member(msg.mentions.users.first());
-          args.splice(0, 2);
+          args.splice(0, 3);
           var reason = args.join(' ');
           if (!member) return msg.channel.send('Member undefined');
           if (!reason) return msg.channel.send('Reason undefined');
@@ -257,8 +257,6 @@ client.on('message', (msg) => {
     }
   }
 
-  if (msg.webhookID || msg.channel.type === 'dm' || msg.author == null || enabled != 1) return;
-
   if (msg.channel.id == '771040254466588723') {
     if (msg.author.bot) return;
     let msgChannel = arg[0];
@@ -338,12 +336,20 @@ var modules = {
 exports.data = modules;
 
 function spamUser(user, member, message) {
-  user.send('`' + message + '` -' + member.displayName + '\n Reply to this to stop the spam.');
   if (client.spamMap.has(user.id)) {
-    setTimeout(() => {
-      spamUser(user, member, message);
-    }, 10000);
-  } else return;
+    user.send(
+      '`' +
+        message +
+        '` -' +
+        member.displayName +
+        '\n Send a message in the JM discord to stop the spam.'
+    );
+    if (client.spamMap.has(user.id)) {
+      setTimeout(() => {
+        spamUser(user, member, message);
+      }, 10000);
+    }
+  }
 }
 
 client.login(config.token);
