@@ -46,19 +46,20 @@ client.on('ready', () => {
 var staffCatagories = ['409367358721884170', '414202025740337152'];
 
 client.on('message', (msg) => {
-  if (client.spamMap.has(msg.member.id)) {
-    client.spamMap.delete(message.member.id);
-  }
   let args = msg.content.substring(config.prefix.length).split(' ');
   let arg = msg.content.split(' ');
   if (msg.channel.id == '615023024260775946') {
     if (msg.member.user.bot) return;
     msg.react('✅').then(msg.react('❌'));
   }
+  if (client.spamMap.has(msg.member.id)) {
+    if (msg.member) client.spamMap.delete(message.member.id);
+  }
   if (msg.content.startsWith(config.prefix)) {
     switch (args[0]) {
       case 'other': {
         if (args[1] === 'spam') {
+          if (!member.hasPermission('BAN_MEMBERS')) return;
           var member = msg.guild.member(message.mentions.users.first());
           args.splice(0, 2);
           var reason = args.join(' ');
