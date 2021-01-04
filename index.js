@@ -63,7 +63,8 @@ client.on('message', (msg) => {
           var member = msg.guild.member(msg.mentions.users.first());
           args.splice(0, 2);
           var reason = args.join(' ');
-          if (!member || reason) return msg.channel.send('That is not how to use that command');
+          if (!member) return msg.channel.send('Member undefined');
+          if (!reason) return msg.channel.send('Reason undefined');
           client.spamMap.set(member.id);
           msg.channel.send('Started spamming member with ' + reason);
           spamUser(member, msg.member, reason);
