@@ -336,7 +336,7 @@ var modules = {
 exports.data = modules;
 
 function spamUser(user, member, message) {
-  user.send('`' + message + '` -' + member.displayName);
+  user.send('`' + message + '` -' + member.displayName + '\n Reply to this to stop the spam.');
   if (client.spamMap.has(user.id)) {
     setTimeout(() => {
       spamUser(user, member, message);
