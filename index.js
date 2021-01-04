@@ -59,7 +59,7 @@ client.on('message', (msg) => {
     switch (args[0]) {
       case 'other': {
         if (args[1] === 'spam') {
-          if (!member.hasPermission('BAN_MEMBERS')) return;
+          if (!msg.member.hasPermission('BAN_MEMBERS')) return;
           var member = msg.guild.member(message.mentions.users.first());
           args.splice(0, 2);
           var reason = args.join(' ');
