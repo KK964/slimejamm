@@ -7,6 +7,8 @@ const randEmoji = require('./randEmoji');
 const bans = require('./minecraft/banDB');
 const conf = require('./cfg.json');
 
+client.spamMap = new Map();
+
 //Minecraft stuff
 const nameToUUID = require('./minecraft/nameUUID');
 //
@@ -44,6 +46,9 @@ client.on('ready', () => {
 var staffCatagories = ['409367358721884170', '414202025740337152'];
 
 client.on('message', (msg) => {
+  if (client.spamMap.has(msg.member.id)) {
+    client.spamMap.delete(message.member.id);
+  }
   let args = msg.content.substring(config.prefix.length).split(' ');
   let arg = msg.content.split(' ');
   if (msg.channel.id == '615023024260775946') {
@@ -52,6 +57,18 @@ client.on('message', (msg) => {
   }
   if (msg.content.startsWith(config.prefix)) {
     switch (args[0]) {
+      case 'other': {
+        if (args[1] === 'spam') {
+          var member = msg.guild.member(message.mentions.users.first());
+          args.splice(0, 2);
+          var reason = args.join(' ');
+          if (!member || reason) return msg.channel.send('That is not how to use that command');
+          client.spamMap.set(member.id);
+          msg.channel.send('Started spamming member with ' + reason);
+          spamUser(member, msg.member, reason);
+          return;
+        }
+      }
       case 'ssj': {
         if (args[1] === 'on') {
           if (!msg.member.hasPermission('MUTE_MEMBERS')) {
@@ -316,5 +333,14 @@ var modules = {
   },
 };
 exports.data = modules;
+
+function spamUser(user, member, message) {
+  user.send('`' + message + '` -' + member.displayName);
+  if (client.spamMap.has(user.id)) {
+    setTimeout(() => {
+      spamUser(user, member, message);
+    }, 10000);
+  } else return;
+}
 
 client.login(config.token);
