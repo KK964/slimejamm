@@ -53,14 +53,14 @@ client.on('message', (msg) => {
     msg.react('✅').then(msg.react('❌'));
   }
   if (msg.member && client.spamMap.has(msg.member.id)) {
-    client.spamMap.delete(message.member.id);
+    client.spamMap.delete(msg.member.id);
   }
   if (msg.content.startsWith(config.prefix)) {
     switch (args[0]) {
       case 'other': {
         if (args[1] === 'spam') {
           if (!msg.member.hasPermission('BAN_MEMBERS')) return;
-          var member = msg.guild.member(message.mentions.users.first());
+          var member = msg.guild.member(msg.mentions.users.first());
           args.splice(0, 2);
           var reason = args.join(' ');
           if (!member || reason) return msg.channel.send('That is not how to use that command');
