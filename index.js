@@ -53,6 +53,7 @@ client.on('message', (msg) => {
     msg.react('✅').then(msg.react('❌'));
   }
   if (msg.member && client.spamMap.has(msg.member.id)) {
+    msg.reply('Okay stopping');
     client.spamMap.delete(msg.member.id);
   }
   if (msg.content.startsWith(config.prefix)) {
