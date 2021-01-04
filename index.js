@@ -52,8 +52,8 @@ client.on('message', (msg) => {
     if (msg.member.user.bot) return;
     msg.react('✅').then(msg.react('❌'));
   }
-  if (client.spamMap.has(msg.member.id)) {
-    if (msg.member) client.spamMap.delete(message.member.id);
+  if (msg.member && client.spamMap.has(msg.member.id)) {
+    client.spamMap.delete(message.member.id);
   }
   if (msg.content.startsWith(config.prefix)) {
     switch (args[0]) {
