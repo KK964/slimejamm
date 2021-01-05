@@ -71,6 +71,15 @@ client.on('message', (msg) => {
           spamUser(member, msg.member, reason);
           return;
         }
+        if (args[1] === 'unspam') {
+          if (!msg.member.hasPermission('BAN_MEMBERS')) return;
+          var member = msg.guild.member(msg.mentions.users.first());
+          if (!member) return msg.channel.send('You need to mention a member');
+          if (!client.spamMap.has(member.id))
+            return msg.channel.send('That member is not being spammed');
+          client.spamMap.delete(member.id);
+          return msg.channel.send('Stopped spamming member');
+        }
       }
       case 'ssj': {
         if (args[1] === 'on') {
