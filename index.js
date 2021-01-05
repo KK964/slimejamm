@@ -46,6 +46,7 @@ client.on('ready', () => {
 var staffCatagories = ['409367358721884170', '414202025740337152'];
 
 client.on('presenceUpdate', (oldPresence, newPresence) => {
+  if (!oldPresence || !newPresence) return;
   if (newPresence.member.id != '738782832972922960') {
     if (oldPresence.status !== newPresence.status) {
       if (newPresence.status == 'offline') {
