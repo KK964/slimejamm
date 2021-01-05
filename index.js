@@ -283,6 +283,12 @@ client.on('message', (msg) => {
   }
 });
 
+client.on('presenceUpdate', (oldPresence, newPresence) => {
+  if (oldPresence.status === newPresence.status) return;
+  if (newPresence.member.id != '738782832972922960') return;
+  console.log(newPresence);
+});
+
 function getUsername(id) {
   return client.guilds.cache.get('295429838041382912').members.cache.get(id).displayName;
 }
