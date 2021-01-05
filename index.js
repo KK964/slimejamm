@@ -284,9 +284,17 @@ client.on('message', (msg) => {
 });
 
 client.on('presenceUpdate', (oldPresence, newPresence) => {
-  if (oldPresence.status === newPresence.status) return;
-  if (newPresence.member.id != '738782832972922960') return;
-  console.log(newPresence);
+  if (newPresence.member.id != '738782832972922960') {
+    if (oldPresence.status !== newPresence.status) {
+      if (newPresence.status == 'offline') {
+        client.channels.cache
+          .get('756273724453421271')
+          .send(
+            'oi <@426892116258717707> your dum dum bot <@738782832972922960> went offline again...'
+          );
+      }
+    }
+  }
 });
 
 function getUsername(id) {
