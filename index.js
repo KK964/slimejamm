@@ -45,6 +45,20 @@ client.on('ready', () => {
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
 
+client.on('presenceUpdate', (oldPresence, newPresence) => {
+  if (newPresence.member.id != '738782832972922960') {
+    if (oldPresence.status !== newPresence.status) {
+      if (newPresence.status == 'offline') {
+        client.channels.cache
+          .get('756273724453421271')
+          .send(
+            'oi <@426892116258717707> your dum dum bot <@738782832972922960> went offline again...'
+          );
+      }
+    }
+  }
+});
+
 client.on('message', (msg) => {
   let args = msg.content.substring(config.prefix.length).split(' ');
   let arg = msg.content.split(' ');
@@ -280,20 +294,6 @@ client.on('message', (msg) => {
     sendChannel.send(msgText);
     msg.react('✅');
     //msg.reply(`*${msgText}*\n\n was sent to ${msgChannel}`);
-  }
-});
-
-client.on('presenceUpdate', (oldPresence, newPresence) => {
-  if (newPresence.member.id != '738782832972922960') {
-    if (oldPresence.status !== newPresence.status) {
-      if (newPresence.status == 'offline') {
-        client.channels.cache
-          .get('756273724453421271')
-          .send(
-            'oi <@426892116258717707> your dum dum bot <@738782832972922960> went offline again...'
-          );
-      }
-    }
   }
 });
 
