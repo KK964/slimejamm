@@ -96,7 +96,7 @@ function logSpams(player, msg, score, message) {
     .setColor('#ff0000')
     .setDescription('Triggered by [Message](' + linkToMessage + '). Score: ' + score)
     .setTimestamp();
-  client.channels.cache.get('754948719475949578').send(spamEm);
+  client.channels.cache.get('735006102344958022').send(spamEm);
 }
 
 function logReports(player, msg, score, message) {
