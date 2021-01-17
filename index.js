@@ -71,6 +71,28 @@ client.on('message', (msg) => {
     msg.reply('Okay stopping').then((msg2) => msg2.delete({ timeout: 10000 }));
     client.spamMap.delete(msg.member.id);
   }
+  const inviteRegex = /(discord\.(gg|io|me|li)|discord(app)?\.com\/invite)(\/.+)/i;
+  const ipAdvertising = /(.\w+).(minehut.gg|aternos.me)/g;
+  if (msg.channel.id == '421155781581340682') {
+    if (inviteRegex.test(msg.content) || ipAdvertising.test(msg.content)) {
+      var trigger = [];
+      if (inviteRegex.test(msg.content)) while ((trigger = inviteRegex.exec(msg.content)) !== null);
+      if (ipAdvertising.test(msg.content))
+        while ((trigger = ipAdvertising.exec(msg.content)) !== null);
+      var msgUser = arg[1] + ' I may of advertised on ' + arg[0].replace(/(\[|\])/g, '');
+      var linkToMessage =
+        'https://discord.com/channels/' + `${msg.guild.id}/${msg.channel.id}/${msg.id}`;
+      const advertisingEm = new Discord.MessageEmbed()
+        .setTitle(msgUser)
+        .setColor('#ff0000')
+        .setDescription(
+          'Trigger by `' + trigger.join(', ') + '\n [' + msg.content + '](' + linkToMessage + ')'
+        )
+        .setTimestamp();
+      client.channels.cache.get('592256625494982676').send(advertisingEm);
+    }
+  }
+
   if (msg.content.startsWith(config.prefix)) {
     switch (args[0]) {
       case 'other': {
