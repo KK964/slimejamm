@@ -76,18 +76,23 @@ client.on('message', (msg) => {
   if (msg.channel.id == '421155781581340682') {
     if (inviteRegex.test(msg.content) || ipAdvertising.test(msg.content)) {
       var trigger = [];
-      if (inviteRegex.test(msg.content)) while ((trigger = inviteRegex.exec(msg.content)) !== null);
+      if (inviteRegex.test(msg.content)) trigger = trigger.concat(msg.content.match(inviteRegex));
       if (ipAdvertising.test(msg.content))
-        while ((trigger = ipAdvertising.exec(msg.content)) !== null);
-      var msgUser = arg[1] + ' I may of advertised on ' + arg[0].replace(/(\[|\])/g, '');
+        trigger = trigger.concat(msg.content.match(ipAdvertising));
+
+      var server = args[0];
+      var advertiser = args[1];
+      if (advertiser == '->') {
+        advertiser = server;
+        server = 'Unknown';
+      }
+      var msgUser = advertiser + ' I may of advertised on ' + server.replace(/(\[|\])/g, '');
       var linkToMessage =
         'https://discord.com/channels/' + `${msg.guild.id}/${msg.channel.id}/${msg.id}`;
       const advertisingEm = new Discord.MessageEmbed()
         .setTitle(msgUser)
         .setColor('#ff0000')
-        .setDescription(
-          'Trigger by `' + trigger.join(', ') + '\n [' + msg.content + '](' + linkToMessage + ')'
-        )
+        .setDescription('Trigger by [' + trigger.join(', ') + '](' + linkToMessage + ')')
         .setTimestamp();
       client.channels.cache.get('592256625494982676').send(advertisingEm);
     }
