@@ -87,8 +87,6 @@ client.on('message', (msg) => {
         trigger.push(...res);
       }
 
-      console.log(trigger);
-
       var server = args[0];
       var advertiser = args[1];
       if (advertiser == '->') {
