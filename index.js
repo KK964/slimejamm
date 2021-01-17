@@ -11,6 +11,7 @@ client.spamMap = new Map();
 
 //Minecraft stuff
 const nameToUUID = require('./minecraft/nameUUID');
+const { transcode } = require('buffer');
 //
 
 //
@@ -71,14 +72,22 @@ client.on('message', (msg) => {
     msg.reply('Okay stopping').then((msg2) => msg2.delete({ timeout: 10000 }));
     client.spamMap.delete(msg.member.id);
   }
-  const inviteRegex = /(discord\.(gg|io|me|li)|discord(app)?\.com\/invite)(\/.+)/i;
-  const ipAdvertising = /(.\w+).(minehut.gg|aternos.me)/g;
+  const inviteRegex = /(discord\.(gg|io|me|li)|discord(app)?\.com\/invite)(\/.+)/gi;
+  const ipAdvertising = /(.\w+).(minehut.gg|aternos.me)/gi;
   if (msg.channel.id == '421155781581340682') {
     if (inviteRegex.test(msg.content) || ipAdvertising.test(msg.content)) {
       var trigger = [];
-      if (inviteRegex.test(msg.content)) trigger = trigger.concat(msg.content.match(inviteRegex));
-      if (ipAdvertising.test(msg.content))
-        trigger = trigger.concat(msg.content.match(ipAdvertising));
+
+      if (msg.content.match(ipAdvertising)) {
+        let res = Array.from(msg.content.match(ipAdvertising));
+        trigger.push(...res);
+      }
+      if (msg.content.match(inviteRegex)) {
+        let res = Array.from(msg.content.match(inviteRegex));
+        trigger.push(...res);
+      }
+
+      console.log(trigger);
 
       var server = args[0];
       var advertiser = args[1];
@@ -92,7 +101,7 @@ client.on('message', (msg) => {
       const advertisingEm = new Discord.MessageEmbed()
         .setTitle(msgUser)
         .setColor('#ff0000')
-        .setDescription('Trigger by [' + trigger.join(', ') + '](' + linkToMessage + ')')
+        .setDescription('Triggered by [' + trigger.join(', ') + '](' + linkToMessage + ')')
         .setTimestamp();
       //client.channels.cache.get('592256625494982676').send(advertisingEm); // release
       client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
