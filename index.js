@@ -11,6 +11,7 @@ client.spamMap = new Map();
 
 //Minecraft stuff
 const nameToUUID = require('./minecraft/nameUUID');
+const serverOn = require('./minecraft/serverOnline');
 const { transcode } = require('buffer');
 //
 
@@ -61,6 +62,39 @@ client.on('presenceUpdate', (oldPresence, newPresence) => {
   }
 });
 
+function sendAdvertisingMsg(msg, args, trigger) {
+  var server = args[0];
+  var advertiser = args[1];
+  if (advertiser == '->') {
+    advertiser = server;
+    server = 'Unknown';
+  }
+  var msgUser =
+    advertiser.replace(/(\[|\]|:|\*)/g, '') +
+    ' I may of advertised on ' +
+    server.replace(/(\[|\]|:|\*)/g, '');
+  var linkToMessage =
+    'https://discord.com/channels/' + `${msg.guild.id}/${msg.channel.id}/${msg.id}`;
+  const advertisingEm = new Discord.MessageEmbed()
+    .setTitle(msgUser)
+    .setColor('#ff0000')
+    .setDescription('Triggered by [' + trigger.join(', ') + '](' + linkToMessage + ')')
+    .setTimestamp();
+  if (trigger.length >= 0) {
+    //client.channels.cache.get('592256625494982676').send(advertisingEm); // release
+    client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
+  }
+}
+
+async function checkIfIp(msg, args, res, trigger) {
+  var i = 0;
+  for (i = 0; i < res.length; i++) {
+    serverOn(res[i], 25565, (server, data) => {
+      if (data.online == true) sendAdvertisingMsg(msg, args, [server]);
+    });
+  }
+}
+
 client.on('message', (msg) => {
   let args = msg.content.substring(config.prefix.length).split(' ');
   let arg = msg.content.split(' ');
@@ -73,39 +107,41 @@ client.on('message', (msg) => {
     client.spamMap.delete(msg.member.id);
   }
   const inviteRegex = /(discord\.(gg|io|me|li)|discord(app)?\.com\/invite)(\/.+)/gi;
-  const ipAdvertising = /(.\w+).(minehut.gg|aternos.me)/gi;
+  const ipAdvertising = /(\w.\w+).(minehut.gg|aternos.me)/gi;
+  const ipAddress = /((\w.\w+)(\.|\(dot\))(.\w+)([^\s]+)?)/gi;
+
   if (msg.channel.id == '421155781581340682') {
-    if (inviteRegex.test(msg.content) || ipAdvertising.test(msg.content)) {
+    if (
+      inviteRegex.test(msg.content) ||
+      ipAdvertising.test(msg.content) ||
+      ipAddress.test(msg.content)
+    ) {
       var trigger = [];
+      var resume = false;
 
       if (msg.content.match(ipAdvertising)) {
         let res = Array.from(msg.content.match(ipAdvertising));
         trigger.push(...res);
+        resume = true;
       }
-      if (msg.content.match(inviteRegex)) {
+      if (msg.content.match(inviteRegex) && !msg.content.includes('https://discord.gg/BWQj987')) {
         let res = Array.from(msg.content.match(inviteRegex));
         trigger.push(...res);
+        resume = true;
       }
 
-      var server = args[0];
-      var advertiser = args[1];
-      if (advertiser == '->') {
-        advertiser = server;
-        server = 'Unknown';
+      if (
+        msg.content.match(ipAddress) &&
+        !msg.content.match(ipAdvertising) &&
+        !msg.content.includes('justminecraft.net')
+      ) {
+        let res = Array.from(msg.content.match(ipAddress));
+        checkIfIp(msg, args, res, trigger);
       }
-      var msgUser =
-        advertiser.replace(/(\[|\]|:|\*)/g, '') +
-        ' I may of advertised on ' +
-        server.replace(/(\[|\]|:|\*)/g, '');
-      var linkToMessage =
-        'https://discord.com/channels/' + `${msg.guild.id}/${msg.channel.id}/${msg.id}`;
-      const advertisingEm = new Discord.MessageEmbed()
-        .setTitle(msgUser)
-        .setColor('#ff0000')
-        .setDescription('Triggered by [' + trigger.join(', ') + '](' + linkToMessage + ')')
-        .setTimestamp();
-      //client.channels.cache.get('592256625494982676').send(advertisingEm); // release
-      client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
+
+      if (resume == true) {
+        sendAdvertisingMsg(msg, args, trigger);
+      }
     }
   }
 
