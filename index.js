@@ -94,7 +94,8 @@ client.on('message', (msg) => {
         .setColor('#ff0000')
         .setDescription('Trigger by [' + trigger.join(', ') + '](' + linkToMessage + ')')
         .setTimestamp();
-      client.channels.cache.get('592256625494982676').send(advertisingEm);
+      //client.channels.cache.get('592256625494982676').send(advertisingEm); // release
+      client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
     }
   }
 
