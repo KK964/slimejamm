@@ -6,8 +6,13 @@ const fs = require('fs');
 const randEmoji = require('./randEmoji');
 const bans = require('./minecraft/banDB');
 const conf = require('./cfg.json');
+const antispam = require('./minecraft/antispam');
 
 client.spamMap = new Map();
+client.antiSpam = new Map();
+client.antiMsg = new Map();
+client.spamScore = new Map();
+client.reportCooldown = new Map();
 
 //Minecraft stuff
 const nameToUUID = require('./minecraft/nameUUID');
@@ -43,6 +48,7 @@ client.on('ready', () => {
     },
     status: 'online',
   });
+  antispam.start(client);
 });
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
@@ -143,6 +149,7 @@ client.on('message', (msg) => {
         sendAdvertisingMsg(msg, args, trigger);
       }
     }
+    antispam.check(msg);
   }
 
   if (msg.content.startsWith(config.prefix)) {
