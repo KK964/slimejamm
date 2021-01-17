@@ -93,7 +93,10 @@ client.on('message', (msg) => {
         advertiser = server;
         server = 'Unknown';
       }
-      var msgUser = advertiser + ' I may of advertised on ' + server.replace(/(\[|\])/g, '');
+      var msgUser =
+        advertiser.replace(/(\[|\]|:|\*)/g, '') +
+        ' I may of advertised on ' +
+        server.replace(/(\[|\]|:|\*)/g, '');
       var linkToMessage =
         'https://discord.com/channels/' + `${msg.guild.id}/${msg.channel.id}/${msg.id}`;
       const advertisingEm = new Discord.MessageEmbed()
