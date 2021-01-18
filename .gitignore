@@ -1,3 +1,4 @@
 
 .env
 minecraft/mysqlconf.json
+minecraft/test.js
