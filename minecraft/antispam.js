@@ -4,6 +4,10 @@ const removeTime = 5;
 const betweenMessage = 500;
 const { MessageEmbed } = require('discord.js');
 const CircularBuffer = require('circular-buffer');
+const emoj = {
+  false: '❌',
+  true: '✅',
+};
 
 var client;
 module.exports = {
@@ -64,12 +68,19 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
     var i = 0;
     for (var e in preMsgs) {
       var retMsg = preMsgs[e].msg;
-      var time = msToDate(preMsgs[e].ms);
+      var mill = preMsgs[e].ms;
+      var time = msToDate(mill);
       var msgChar2 = retMsg.length;
       var dif = levenshtein(msg, retMsg);
       var ratio = getRatio(msgChar, msgChar2, dif);
-      listOfMsgs.push(time + ': `' + retMsg + '`');
-      if (ratio <= 1 / 10 && msgChar > 3) {
+      var counts = false;
+      var useEmoj = emoj.false;
+      if (mill < ms('1m')) {
+        counts = true;
+        useEmoj = emoj.true;
+      }
+      listOfMsgs.push(useEmoj + ' ' + time + ': `' + retMsg + '`');
+      if (ratio <= 1 / 10 && msgChar > 3 && counts == true) {
         var score = getScore(player);
         client.spamScore.set(player, { score: score + 10, ms: Date.now() });
       }
