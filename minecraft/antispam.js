@@ -54,8 +54,8 @@ function getRatio(a, b, dif) {
 }
 
 function msToDate(inms) {
-  var d = new Date(parseInt(ms(inms), 10));
-  var ds = d.toString('MM/dd/yy HH:mm:ss');
+  var d = new Date(inms);
+  var ds = d.toLocaleTimeString();
   return ds;
 }
 
@@ -68,7 +68,7 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
       var msgChar2 = retMsg.length;
       var dif = levenshtein(msg, retMsg);
       var ratio = getRatio(msgChar, msgChar2, dif);
-      listOfMsgs.push('`' + retMsg + '`: ||' + time + '||');
+      listOfMsgs.push(time + ': `' + retMsg + '`');
       if (ratio <= 1 / 10 && msgChar > 3) {
         var score = getScore(player);
         client.spamScore.set(player, { score: score + 10, ms: Date.now() });
