@@ -85,7 +85,6 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
         client.spamScore.set(player, { score: score + 10, ms: Date.now() });
       }
       i++;
-      console.log(listOfMsgs);
       if (i == preMsgs.length) {
         check(player, msg, message, listOfMsgs.join('\n'));
       }
