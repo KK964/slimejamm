@@ -87,8 +87,8 @@ function sendAdvertisingMsg(msg, args, trigger) {
     .setDescription('Triggered by [' + trigger.join(', ') + '](' + linkToMessage + ')')
     .setTimestamp();
   if (trigger.length >= 0) {
-    //client.channels.cache.get('592256625494982676').send(advertisingEm); // release
-    client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
+    client.channels.cache.get('592256625494982676').send(advertisingEm); // release
+    //client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
   }
 }
 
