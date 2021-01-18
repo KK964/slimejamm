@@ -3,6 +3,7 @@ const ms = require('ms');
 const removeTime = 5;
 const betweenMessage = 500;
 const { MessageEmbed } = require('discord.js');
+const CircularBuffer = require('circular-buffer');
 
 var client;
 module.exports = {
@@ -33,23 +34,61 @@ module.exports = {
 
 function handleData(player, msg, message) {
   sendingFast(player);
-  compareMessages(player, msg);
-  check(player, msg, message);
+  compareMessages(player, msg, message);
+  //check(player, msg, message);
 }
 
 function setMessage(player, msg) {
-  client.antiMsg.set(player, { msg: msg, ms: Date.now() });
+  //client.antiMsg.set(player, { msg: msg, ms: Date.now() });
+  var buf = getMessages(player);
+  buf.push({ msg: msg, ms: Date.now() });
+  client.antiMsg.set(player, buf);
 }
 
-async function compareMessages(player, msg) {
-  if (client.antiMsg.get(player)) {
-    var preMsgs = await client.antiMsg.get(player).msg;
-    var msgChar = msg.length;
-    var needsChange = await levenshtein(msg, preMsgs);
-    if (needsChange < msgChar * 0.9) {
-      var score = getScore(player);
-      client.spamScore.set(player, { score: score + msgChar, ms: Date.now() });
+function getMessages(player) {
+  if (!client.antiMsg.get(player)) return new CircularBuffer(3);
+  return client.antiMsg.get(player);
+}
+
+function getRatio(a, b, dif) {
+  return (ratio = dif / (a + b));
+}
+
+function msToDate(inms) {
+  var d = new Date(parseInt(ms(inms), 10));
+  var ds = d.toString('MM/dd/yy HH:mm:ss');
+  return ds;
+}
+
+function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
+  if (preMsgs.length > 0) {
+    var i = 0;
+    for (var e in preMsgs) {
+      var retMsg = preMsgs[e].msg;
+      var time = msToDate(preMsgs[e].ms);
+      var msgChar2 = retMsg.length;
+      var dif = levenshtein(msg, retMsg);
+      var ratio = getRatio(msgChar, msgChar2, dif);
+      listOfMsgs.push('`' + retMsg + '`: ||' + time + '||');
+      if (ratio <= 1 / 10 && msgChar > 3) {
+        var score = getScore(player);
+        client.spamScore.set(player, { score: score + 10, ms: Date.now() });
+      }
+      i++;
+      if (i == preMsgs.length) {
+        check(player, msg, message, listOfMsgs.join('\n'));
+      }
     }
+  }
+}
+
+function compareMessages(player, msg, message) {
+  if (client.antiMsg.get(player)) {
+    var buf = getMessages(player);
+    var preMsgs = buf.toarray();
+    var msgChar = msg.length;
+    var listOfMsgs = [];
+    runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message);
   }
   setMessage(player, msg);
 }
@@ -76,17 +115,20 @@ function getTimeBetweenMessages(player) {
     return Date.now - client.antiSpam.get(player) || Date.now() + 99999;
 }
 
-function check(player, msg, message) {
+function check(player, msg, message, input) {
   var score = getScore(player);
-  if (score > 10) {
-    //logSpams(player, msg, score, message);
-  }
+  input = input || '`' + msg + '`';
+  console.log(player + ': ' + score);
   if (score > 20) {
-    //logReports(player, msg, score, message);
+    logSpams(player, msg, score, message, input);
+  }
+  if (score > 50) {
+    logReports(player, msg, score, message, input);
   }
 }
 
-function logSpams(player, msg, score, message) {
+function logSpams(player, msg, score, message, input) {
+  console.log(player + ': ' + score);
   var msgUser = player + ' I may be spamming.';
   var linkToMessage =
     'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
@@ -94,12 +136,14 @@ function logSpams(player, msg, score, message) {
   const spamEm = new MessageEmbed()
     .setTitle(msgUser)
     .setColor('#ff0000')
-    .setDescription('Triggered by [Message](' + linkToMessage + '). Score: ' + score)
+    .setDescription(
+      'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
+    )
     .setTimestamp();
   client.channels.cache.get('735006102344958022').send(spamEm);
 }
 
-function logReports(player, msg, score, message) {
+function logReports(player, msg, score, message, input) {
   if (
     !client.reportCooldown.get(player) ||
     client.reportCooldown.get(player) + ms('1m') < Date.now()
@@ -113,7 +157,9 @@ function logReports(player, msg, score, message) {
     const spamEm = new MessageEmbed()
       .setTitle(msgUser)
       .setColor('#ff0000')
-      .setDescription('Triggered by [Message](' + linkToMessage + '). Score: ' + score)
+      .setDescription(
+        'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
+      )
       .setTimestamp();
     client.channels.cache.get('592256625494982676').send(spamEm);
   }
