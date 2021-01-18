@@ -143,7 +143,7 @@ function logSpams(player, msg, score, message, input) {
 function logReports(player, msg, score, message, input) {
   if (
     !client.reportCooldown.get(player) ||
-    client.reportCooldown.get(player) + ms('1m') < Date.now()
+    client.reportCooldown.get(player) + ms('5m') < Date.now()
   ) {
     if (client.reportCooldown.get(player)) client.reportCooldown.delete(player);
     client.reportCooldown.set(player, Date.now());
