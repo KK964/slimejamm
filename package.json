@@ -11,6 +11,7 @@
   "author": "KK964",
   "license": "ISC",
   "dependencies": {
+    "circular-buffer": "^1.0.3",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "http-https": "^1.0.0",

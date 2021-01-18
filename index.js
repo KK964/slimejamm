@@ -87,8 +87,8 @@ function sendAdvertisingMsg(msg, args, trigger) {
     .setDescription('Triggered by [' + trigger.join(', ') + '](' + linkToMessage + ')')
     .setTimestamp();
   if (trigger.length >= 0) {
-    client.channels.cache.get('592256625494982676').send(advertisingEm); // release
-    //client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
+    //client.channels.cache.get('592256625494982676').send(advertisingEm); // release
+    client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
   }
 }
 
@@ -97,6 +97,24 @@ async function checkIfIp(msg, args, res, trigger) {
   for (i = 0; i < res.length; i++) {
     serverOn(res[i], 25565, (server, data) => {
       if (data.online == true) sendAdvertisingMsg(msg, args, [server]);
+    });
+  }
+}
+async function checkIfIp2(msg, args, res, trigger) {
+  var i = 0;
+  for (i = 0; i < res.length; i++) {
+    serverOn(res[i], 25565, (server, data) => {
+      if (data.online == true) {
+        msg.delete();
+        msg.channel.send(msg.member.displayName + ', do not advertise please.').then((delmsg) => {
+          delmsg.delete({ timeout: 10000 });
+          sendAdvertisingMsg(
+            msg,
+            ['Discord', msg.author.username + '#' + msg.author.discriminator],
+            [server]
+          );
+        });
+      }
     });
   }
 }
@@ -150,6 +168,49 @@ client.on('message', (msg) => {
       }
     }
     antispam.check(msg);
+  } else {
+    if (!msg.webhookID) {
+      if (
+        inviteRegex.test(msg.content) ||
+        ipAdvertising.test(msg.content) ||
+        ipAddress.test(msg.content)
+      ) {
+        var trigger = [];
+        var resume = false;
+
+        if (msg.content.match(ipAdvertising)) {
+          let res = Array.from(msg.content.match(ipAdvertising));
+          trigger.push(...res);
+          resume = true;
+        }
+        if (msg.content.match(inviteRegex) && !msg.content.includes('https://discord.gg/BWQj987')) {
+          let res = Array.from(msg.content.match(inviteRegex));
+          trigger.push(...res);
+          resume = true;
+        }
+
+        if (
+          msg.content.match(ipAddress) &&
+          !msg.content.match(ipAdvertising) &&
+          !msg.content.includes('justminecraft.net')
+        ) {
+          let res = Array.from(msg.content.match(ipAddress));
+          checkIfIp2(msg, args, res, trigger);
+        }
+
+        if (resume == true) {
+          sendAdvertisingMsg(
+            msg,
+            ['Discord', msg.author.username + '#' + msg.author.discriminator],
+            trigger
+          );
+          msg.delete();
+          msg.channel.send(msg.member.displayName + ', do not advertise please.').then((delmsg) => {
+            delmsg.delete({ timeout: 10000 });
+          });
+        }
+      }
+    }
   }
 
   if (msg.content.startsWith(config.prefix)) {
