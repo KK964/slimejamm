@@ -75,7 +75,7 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
       var ratio = getRatio(msgChar, msgChar2, dif);
       var counts = false;
       var useEmoj = emoj.false;
-      if (mill < ms('1m')) {
+      if (mill + ms('1m') < Date.now()) {
         counts = true;
         useEmoj = emoj.true;
       }
