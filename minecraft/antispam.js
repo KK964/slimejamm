@@ -27,7 +27,6 @@ module.exports = {
     server = server.replace(/(\[|\]|:|\*)/g, '');
     args.splice(0, spliceAm);
     var message = args.join(' ');
-    //console.log(message);
     handleData(player, message, msg);
   },
 };
@@ -118,7 +117,6 @@ function getTimeBetweenMessages(player) {
 function check(player, msg, message, input) {
   var score = getScore(player);
   input = input || '`' + msg + '`';
-  console.log(player + ': ' + score);
   if (score > 20) {
     logSpams(player, msg, score, message, input);
   }
@@ -128,7 +126,6 @@ function check(player, msg, message, input) {
 }
 
 function logSpams(player, msg, score, message, input) {
-  console.log(player + ': ' + score);
   var msgUser = player + ' I may be spamming.';
   var linkToMessage =
     'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
