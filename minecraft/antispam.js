@@ -86,6 +86,7 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
       }
       i++;
       if (i == preMsgs.length) {
+        listOfMsgs.push('New ' + ' ' + msToDate(Date.now()) + ': `' + msg + '`');
         check(player, msg, message, listOfMsgs.join('\n'));
       }
     }
