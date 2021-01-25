@@ -38,6 +38,12 @@ module.exports = {
 function handleData(player, msg, message) {
   sendingFast(player);
   compareMessages(player, msg, message);
+  if (
+    client.reportCooldown.get(player) &&
+    client.reportCooldown.get(player).ms + ms('20m') < Date.now()
+  ) {
+    client.reportCooldown.delete(player);
+  }
   //check(player, msg, message);
 }
 
@@ -155,10 +161,10 @@ function logSpams(player, msg, score, message, input) {
 function logReports(player, msg, score, message, input) {
   if (
     !client.reportCooldown.get(player) ||
-    client.reportCooldown.get(player) + ms('5m') < Date.now()
+    (client.reportCooldown.get(player).score < score &&
+      client.reportCooldown.get(player).ms + ms('5m') < Date.now())
   ) {
-    if (client.reportCooldown.get(player)) client.reportCooldown.delete(player);
-    client.reportCooldown.set(player, Date.now());
+    client.reportCooldown.set(player, { ms: Date.now(), score: score });
     var msgUser = player + ' I may be spamming.';
     var linkToMessage =
       'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
