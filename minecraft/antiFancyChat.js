@@ -50,10 +50,8 @@ function checkIfFancy(player, msg) {
     }
   }
   var afterCheck = res.join('');
-  console.log(afterCheck);
   if (regex.test(afterCheck)) {
     client.fancyChat.set(player, { score: getScore(player) + 10, ms: Date.now() });
-    console.log('Detected! New score: ' + getScore(player));
   }
 }
 
