@@ -384,7 +384,7 @@ client.on('message', (msg) => {
         msg.channel.send(
           '> **!mc <username>** - Show name history\n' +
             '> **!mc uuid <username>** - Show users uuid\n' +
-            '> **!online** - Show if server is online, and ammount of players on.'
+            '> **!online** - Show if server is online, and amount of players on.'
         );
       }
     }
