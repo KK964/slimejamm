@@ -220,60 +220,6 @@ client.on('message', (msg) => {
 
   if (msg.content.startsWith(config.prefix)) {
     switch (args[0]) {
-      case 'other': {
-        if (args[1] === 'spam') {
-          if (!msg.member.hasPermission('BAN_MEMBERS')) return;
-          var member = msg.guild.member(msg.mentions.users.first());
-          args.splice(0, 3);
-          var reason = args.join(' ');
-          if (!member) return msg.channel.send('Member undefined');
-          if (!reason) return msg.channel.send('Reason undefined');
-          client.spamMap.set(member.id);
-          msg.channel.send('Started spamming member with ' + reason);
-          spamUser(member, msg.member, reason);
-          return;
-        }
-        if (args[1] === 'unspam') {
-          if (!msg.member.hasPermission('BAN_MEMBERS')) return;
-          var member = msg.guild.member(msg.mentions.users.first());
-          if (!member) return msg.channel.send('You need to mention a member');
-          if (!client.spamMap.has(member.id))
-            return msg.channel.send('That member is not being spammed');
-          client.spamMap.delete(member.id);
-          return msg.channel.send('Stopped spamming member');
-        }
-      }
-      case 'ssj': {
-        if (args[1] === 'on') {
-          if (!msg.member.hasPermission('MUTE_MEMBERS')) {
-            msg.react('❌');
-            return;
-          }
-          enabled = 1;
-          console.log('SlimeSpider is now ON');
-          msg.react('✅');
-          client.user
-            .setPresence({
-              activity: { name: 'shipping berry and sj' },
-              status: 'online',
-            })
-            .then(console.log)
-            .catch(console.error);
-        }
-        if (args[1] === 'off') {
-          if (!msg.member.hasPermission('MUTE_MEMBERS')) {
-            msg.react('❌');
-            return;
-          }
-          enabled = 0;
-          console.log('SlimeSpider is now OFF');
-          msg.react('✅');
-          client.user
-            .setPresence({ activity: { name: 'nothing ;-;' }, status: 'idle' })
-            .then(console.log)
-            .catch(console.error);
-        }
-      }
       case 'mc': {
         if (args[1] === 'lookup') {
           nameToUUID.data.getUUIDNames(args[2], msg);
@@ -403,7 +349,7 @@ client.on('message', (msg) => {
         }
         if (args[1] == undefined || args[1] === 'help') {
           msg.channel.send(
-            '> **!mc lookup <username>** - Show name history\n' +
+            '> **!mc <username>** - Show name history\n' +
               '> **!mc uuid <username>** - Show users uuid\n'
           );
           if (msg.member.permissions.has('BAN_MEMBERS')) {
@@ -433,6 +379,13 @@ client.on('message', (msg) => {
             msg.channel.send('JustMinecraft is offline! status: `' + data.status + '`');
           }
         });
+      }
+      case 'help': {
+        msg.channel.send(
+          '> **!mc <username>** - Show name history\n' +
+            '> **!mc uuid <username>** - Show users uuid\n' +
+            '> **!online** - Show if server is online, and ammount of players on.'
+        );
       }
     }
   }
