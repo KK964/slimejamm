@@ -427,7 +427,11 @@ client.on('message', (msg) => {
       }
       case 'online': {
         serverOn('justminecraft.net', 25565, (serverName, data) => {
-          msg.channel.send('JustMinecraft has ' + data.players.now + ' online players.');
+          if (data.online) {
+            msg.channel.send('JustMinecraft is online with ' + data.players.now + ' players on.');
+          } else {
+            msg.channel.send('JustMinecraft is offline! status: `' + data.status + '`');
+          }
         });
       }
     }
