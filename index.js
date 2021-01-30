@@ -425,6 +425,11 @@ client.on('message', (msg) => {
           nameToUUID.data.getUUIDNames(args[1], msg);
         }
       }
+      case 'online': {
+        serverOn('justminecraft.net', 25565, (serverName, data) => {
+          msg.channel.send('JustMinecraft has ' + data.players.now + ' online players.');
+        });
+      }
     }
   }
 
