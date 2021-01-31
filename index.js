@@ -370,6 +370,7 @@ client.on('message', (msg) => {
         } else if (args[2] == undefined) {
           nameToUUID.data.getUUIDNames(args[1], msg);
         }
+        break;
       }
       case 'online': {
         serverOn('justminecraft.net', 25565, (serverName, data) => {
@@ -379,6 +380,7 @@ client.on('message', (msg) => {
             msg.channel.send('JustMinecraft is offline! status: `' + data.status + '`');
           }
         });
+        break;
       }
       case 'help': {
         msg.channel.send(
@@ -386,6 +388,7 @@ client.on('message', (msg) => {
             '> **!mc uuid <username>** - Show users uuid\n' +
             '> **!online** - Show if server is online, and amount of players on.'
         );
+        break;
       }
     }
   }
