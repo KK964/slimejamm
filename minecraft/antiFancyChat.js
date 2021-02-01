@@ -1,5 +1,6 @@
 const ms = require('ms');
 const { MessageEmbed } = require('discord.js');
+const config = require('../cfg.json');
 var blacklist = ['(', ')', '{', '}', '[', ']', '|'];
 
 var client;
@@ -19,6 +20,12 @@ module.exports = {
       server = 'Unknown';
       spliceAm = 3;
     }
+
+    if (!player || !server) return;
+    if (config.servers.includes(player)) return;
+    var deathMsgRegex = '(?<=(.+))' + player + ' was slain by(?=(.+))';
+    const reg = new RegExp(deathMsgRegex, 'g');
+    if (reg.test(msg.content)) return;
 
     player = player.replace(/(\[|\]|:|\*)/g, '');
     server = server.replace(/(\[|\]|:|\*)/g, '');
