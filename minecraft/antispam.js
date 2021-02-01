@@ -1,4 +1,5 @@
 const levenshtein = require('../StringLevenshtein/levenshtein');
+const config = require('../cfg.json');
 const ms = require('ms');
 const removeTime = 5;
 const betweenMessage = 500;
@@ -26,6 +27,12 @@ module.exports = {
       server = 'Unknown';
       spliceAm = 3;
     }
+
+    if (!player || !server) return;
+    if (config.servers.includes(player)) return;
+    var deathMsgRegex = '(?<=(.+))' + player + ' was slain by(?=(.+))';
+    const reg = new RegExp(deathMsgRegex, 'g');
+    if (reg.test(msg.content)) return;
 
     player = player.replace(/(\[|\]|:|\*)/g, '');
     server = server.replace(/(\[|\]|:|\*)/g, '');

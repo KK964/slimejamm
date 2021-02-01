@@ -1,3 +1,4 @@
 {
-  "botState": "1"
+  "botState": "1",
+  "servers": ["lobby", "creative", "survival", "parkour", "bedwars"]
 }
