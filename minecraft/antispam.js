@@ -15,6 +15,7 @@ module.exports = {
   start: (inClient) => {
     client = inClient;
     repeating();
+    repeating2();
   },
   check: (msg) => {
     var args = msg.content.split(' ');
@@ -30,8 +31,7 @@ module.exports = {
 
     if (!player || !server) return;
     if (config.servers.includes(player)) return;
-    var deathMsgRegex = '(?<=(.+))' + player + ' was slain by(?=(.+))';
-    const reg = new RegExp(deathMsgRegex, 'g');
+    const reg = /(slain|fell|shot)/g;
     if (reg.test(msg.content)) return;
 
     player = player.replace(/(\[|\]|:|\*)/g, '');
@@ -45,12 +45,6 @@ module.exports = {
 function handleData(player, msg, message) {
   sendingFast(player);
   compareMessages(player, msg, message);
-  if (
-    client.reportCooldown.get(player) &&
-    client.reportCooldown.get(player).ms + ms('20m') < Date.now()
-  ) {
-    client.reportCooldown.delete(player);
-  }
   //check(player, msg, message);
 }
 
@@ -166,11 +160,7 @@ function logSpams(player, msg, score, message, input) {
 }
 
 function logReports(player, msg, score, message, input) {
-  if (
-    !client.reportCooldown.get(player) ||
-    (client.reportCooldown.get(player).score < score &&
-      client.reportCooldown.get(player).ms + ms('5m') < Date.now())
-  ) {
+  if (!client.reportCooldown.get(player) || client.reportCooldown.get(player).score < score) {
     client.reportCooldown.set(player, { ms: Date.now(), score: score });
     var msgUser = player + ' I may be spamming.';
     var linkToMessage =
@@ -201,4 +191,20 @@ function repeating() {
   setTimeout(() => {
     repeating();
   }, ms('5s'));
+}
+
+function repeating2() {
+  client.reportCooldown.forEach((e, key, map) => {
+    //console.log(key + ' ' + e.score + ' ' + e.ms);
+    var newScore = e.score - 1;
+    if (newScore <= 0) {
+      client.reportCooldown.delete(key);
+    } else {
+      client.reportCooldown.set(key, { ms: Date.now(), score: newScore });
+    }
+  });
+
+  setTimeout(() => {
+    repeating2();
+  }, ms('20s'));
 }
