@@ -42,13 +42,13 @@ module.exports = {
     server = server.replace(/(\[|\]|:|\*)/g, '');
     args.splice(0, spliceAm);
     var message = args.join(' ');
-    handleData(player, message, msg);
+    handleData(player, message, msg, server);
   },
 };
 
-function handleData(player, msg, message) {
+function handleData(player, msg, message, server) {
   sendingFast(player);
-  compareMessages(player, msg, message);
+  compareMessages(player, msg, message, server);
   //check(player, msg, message);
 }
 
@@ -74,7 +74,7 @@ function msToDate(inms) {
   return ds;
 }
 
-function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
+function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message, server) {
   if (preMsgs.length > 0) {
     var i = 0;
     for (var e in preMsgs) {
@@ -98,19 +98,19 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message) {
       i++;
       if (i == preMsgs.length) {
         listOfMsgs.push('New ' + ' ' + msToDate(Date.now()) + ': `' + msg + '`');
-        check(player, msg, message, listOfMsgs.join('\n'));
+        check(player, msg, message, listOfMsgs.join('\n'), server);
       }
     }
   }
 }
 
-function compareMessages(player, msg, message) {
+function compareMessages(player, msg, message, server) {
   if (client.antiMsg.get(player)) {
     var buf = getMessages(player);
     var preMsgs = buf.toarray();
     var msgChar = msg.length;
     var listOfMsgs = [];
-    runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message);
+    runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message, server);
   }
   setMessage(player, msg);
 }
@@ -137,19 +137,19 @@ function getTimeBetweenMessages(player) {
     return Date.now - client.antiSpam.get(player) || Date.now() + 99999;
 }
 
-function check(player, msg, message, input) {
+function check(player, msg, message, input, server) {
   var score = getScore(player);
   input = input || '`' + msg + '`';
   if (score > 20) {
-    logSpams(player, msg, score, message, input);
+    logSpams(player, msg, score, message, input, server);
   }
   if (score > 50) {
-    logReports(player, msg, score, message, input);
+    logReports(player, msg, score, message, input, server);
   }
 }
 
-function logSpams(player, msg, score, message, input) {
-  var msgUser = player + ' I may be spamming.';
+function logSpams(player, msg, score, message, input, server) {
+  var msgUser = player + ' I may be spamming, on ' + server;
   var linkToMessage =
     'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
 
@@ -163,13 +163,13 @@ function logSpams(player, msg, score, message, input) {
   client.channels.cache.get('735006102344958022').send(spamEm);
 }
 
-function logReports(player, msg, score, message, input) {
+function logReports(player, msg, score, message, input, server) {
   if (
     (!client.reportCooldown.get(player) || client.reportCooldown.get(player).score < score) &&
     Date.now() > client.reportCooldown.get(player).ms + ms('30s')
   ) {
     client.reportCooldown.set(player, { ms: Date.now(), score: score });
-    var msgUser = player + ' I may be spamming.';
+    var msgUser = player + ' I may be spamming, on ' + server;
     var linkToMessage =
       'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
 
