@@ -25,8 +25,12 @@ module.exports = {
 
     if (player == '->') {
       player = server;
-      server = 'Unknown';
+      server = '/msg `' + args[2].replace(/(\[|\]|:|\*)/g, '') + '`';
       spliceAm = 3;
+    } else if (player == 'sent') {
+      player = server;
+      server = '/mail to `' + args[4].replace(/(\[|\]|:|\*)/g, '') + '`';
+      spliceAm = 5;
     }
 
     if (!player || !server) return;
