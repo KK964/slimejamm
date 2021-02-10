@@ -160,7 +160,10 @@ function logSpams(player, msg, score, message, input) {
 }
 
 function logReports(player, msg, score, message, input) {
-  if (!client.reportCooldown.get(player) || client.reportCooldown.get(player).score < score) {
+  if (
+    (!client.reportCooldown.get(player) || client.reportCooldown.get(player).score < score) &&
+    Date.now() > client.reportCooldown.get(player).ms + ms('30s')
+  ) {
     client.reportCooldown.set(player, { ms: Date.now(), score: score });
     var msgUser = player + ' I may be spamming.';
     var linkToMessage =
