@@ -165,8 +165,9 @@ function logSpams(player, msg, score, message, input, server) {
 
 function logReports(player, msg, score, message, input, server) {
   if (
-    (!client.reportCooldown.get(player) || client.reportCooldown.get(player).score < score) &&
-    Date.now() > client.reportCooldown.get(player).ms + ms('30s')
+    !client.reportCooldown.get(player) ||
+    (client.reportCooldown.get(player).score < score &&
+      Date.now() > client.reportCooldown.get(player).ms + ms('30s'))
   ) {
     client.reportCooldown.set(player, { ms: Date.now(), score: score });
     var msgUser = player + ' I may be spamming, on ' + server;
