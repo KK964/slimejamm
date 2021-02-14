@@ -124,6 +124,11 @@ async function checkIfIp2(msg, args, res, trigger) {
 }
 
 client.on('message', (msg) => {
+  if ((enabled = 1 && msg.author.id == '509785004965101579')) {
+    if (msg.attachments.size > 0) {
+      msg.delete();
+    }
+  }
   let args = msg.content.substring(config.prefix.length).split(' ');
   let arg = msg.content.split(' ');
   if (msg.channel.id == '615023024260775946') {
@@ -388,6 +393,17 @@ client.on('message', (msg) => {
             '> **!mc uuid <username>** - Show users uuid\n' +
             '> **!online** - Show if server is online, and amount of players on.'
         );
+        break;
+      }
+      case 'e': {
+        if (msg.member.hasPermission('BAN_MEMBERS')) {
+          if (enabled == 0) enabled = 1;
+          if (enabled == 1) enabled = 0;
+          msg.reply(enabled).then((mms) => {
+            mms.delete({ timeout: 1000 });
+          });
+          msg.delete();
+        }
         break;
       }
     }
