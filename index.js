@@ -397,8 +397,11 @@ client.on('message', (msg) => {
       }
       case 'e': {
         if (msg.member.hasPermission('BAN_MEMBERS')) {
-          if (enabled == 0) enabled = 1;
-          if (enabled == 1) enabled = 0;
+          if (enabled == 0) {
+            enabled = 1;
+          } else {
+            enabled = 0;
+          }
           msg.reply(enabled).then((mms) => {
             mms.delete({ timeout: 1000 });
           });
