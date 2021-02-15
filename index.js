@@ -189,7 +189,7 @@ client.on('message', (msg) => {
     antiCaps.check(msg);
     antiChar.check(msg);
   } else {
-    if (!msg.webhookID) {
+    if (!msg.webhookID && msg.guild.id == '295429838041382912') {
       if (
         inviteRegex.test(msg.content) ||
         ipAdvertising.test(msg.content) ||
