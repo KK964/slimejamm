@@ -8,6 +8,8 @@ const bans = require('./minecraft/banDB');
 const conf = require('./cfg.json');
 const antispam = require('./minecraft/antispam');
 const antiFacny = require('./minecraft/antiFancyChat');
+const antiCaps = require('./minecraft/antiCaps');
+const antiChar = require('./minecraft/antiChar');
 
 client.spamMap = new Map();
 client.antiSpam = new Map();
@@ -16,6 +18,10 @@ client.spamScore = new Map();
 client.reportCooldown = new Map();
 client.fancyChat = new Map();
 client.fancyCooldown = new Map();
+client.capsScore = new Map();
+client.capsCooldown = new Map();
+client.charScore = new Map();
+client.charCooldown = new Map();
 
 //Minecraft stuff
 const nameToUUID = require('./minecraft/nameUUID');
@@ -53,6 +59,8 @@ client.on('ready', () => {
   });
   antispam.start(client);
   antiFacny.start(client);
+  antiCaps.start(client);
+  antiChar.start(client);
 });
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
@@ -178,6 +186,8 @@ client.on('message', (msg) => {
     }
     antispam.check(msg);
     antiFacny.check(msg);
+    antiCaps.check(msg);
+    antiChar.check(msg);
   } else {
     if (!msg.webhookID) {
       if (
