@@ -55,7 +55,7 @@ function msToDate(inms) {
 
 function runLev(player, msg, message, server) {
   var difMsg = msg.toString().replace(/([^a-z])/gi, '');
-  var msgChar = difMsg.length();
+  var msgChar = difMsg.length;
   var dif = levenshtein(difMsg, difMsg.toUpperCase());
   var ratio = getRatio(msgChar, dif);
   if (ratio <= 3 / 10 && msgChar > 3) {
