@@ -53,8 +53,10 @@ function msToDate(inms) {
   return ds;
 }
 
-function runLev(player, msgChar, msg, message, server) {
-  var dif = levenshtein(msg, msg.toUpperCase());
+function runLev(player, msg, message, server) {
+  var difMsg = msg.replaceAll(/([^a-z])/gi, '');
+  var msgChar = difMsg.length();
+  var dif = levenshtein(difMsg, difMsg.toUpperCase());
   var ratio = getRatio(msgChar, dif);
   if (ratio <= 3 / 10 && msgChar > 3) {
     var score = getScore(player);
@@ -64,8 +66,7 @@ function runLev(player, msgChar, msg, message, server) {
 }
 
 function compareMessages(player, msg, message, server) {
-  var msgChar = msg.length;
-  runLev(player, msgChar, msg, message, server);
+  runLev(player, msg, message, server);
 }
 
 function getScore(player) {
