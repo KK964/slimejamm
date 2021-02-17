@@ -78,27 +78,29 @@ function getScore(player) {
 function check(player, msg, message, input, server) {
   var score = getScore(player);
   input = input || '`' + msg + '`';
-  if (score > 20) {
+  if (score > 10) {
     logSpams(player, msg, score, message, input, server);
   }
-  if (score > 50) {
+  if (score > 30) {
     logReports(player, msg, score, message, input, server);
   }
 }
 
 function logSpams(player, msg, score, message, input, server) {
-  var msgUser = player + ' I may be using too many caps, on ' + server;
-  var linkToMessage =
-    'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
+  if (!client.capsCooldown.get(player) || client.capsCooldown.get(player).score < score) {
+    var msgUser = player + ' I may be using too many caps, on ' + server;
+    var linkToMessage =
+      'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
 
-  const spamEm = new MessageEmbed()
-    .setTitle(msgUser)
-    .setColor('#ff0000')
-    .setDescription(
-      'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
-    )
-    .setTimestamp();
-  client.channels.cache.get('735006102344958022').send(spamEm);
+    const spamEm = new MessageEmbed()
+      .setTitle(msgUser)
+      .setColor('#ff0000')
+      .setDescription(
+        'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
+      )
+      .setTimestamp();
+    client.channels.cache.get('735006102344958022').send(spamEm);
+  }
 }
 
 function logReports(player, msg, score, message, input, server) {
