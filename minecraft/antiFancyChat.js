@@ -88,18 +88,20 @@ function check(player, msg, message, input) {
 }
 
 function logSpams(player, msg, score, message, input) {
-  var msgUser = player + ' I may be using fancy chat.';
-  var linkToMessage =
-    'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
+  if (!client.fancyCooldown.get(player) || client.fancyCooldown.get(player).score < score) {
+    var msgUser = player + ' I may be using fancy chat.';
+    var linkToMessage =
+      'https://discord.com/channels/' + `${message.guild.id}/${message.channel.id}/${message.id}`;
 
-  const spamEm = new MessageEmbed()
-    .setTitle(msgUser)
-    .setColor('#ff0000')
-    .setDescription(
-      'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
-    )
-    .setTimestamp();
-  client.channels.cache.get('735006102344958022').send(spamEm);
+    const spamEm = new MessageEmbed()
+      .setTitle(msgUser)
+      .setColor('#ff0000')
+      .setDescription(
+        'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
+      )
+      .setTimestamp();
+    client.channels.cache.get('735006102344958022').send(spamEm);
+  }
 }
 
 function logReports(player, msg, score, message, input) {
