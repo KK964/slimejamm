@@ -81,6 +81,7 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message, server)
       var retMsg = preMsgs[e].msg;
       var mill = preMsgs[e].ms;
       var time = msToDate(mill);
+      if (!retMsg) return;
       var msgChar2 = retMsg.length;
       var dif = levenshtein(msg, retMsg);
       var ratio = getRatio(msgChar, msgChar2, dif);
