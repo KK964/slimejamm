@@ -107,6 +107,7 @@ function runLev(player, buf, preMsgs, msgChar, listOfMsgs, msg, message, server)
 function compareMessages(player, msg, message, server) {
   if (client.antiMsg.get(player)) {
     var buf = getMessages(player);
+    if (buf.size == 0) return;
     var preMsgs = buf.toarray();
     var msgChar = msg.length;
     var listOfMsgs = [];
