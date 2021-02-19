@@ -123,7 +123,7 @@ function handleDisconnect() {
   con = mysql.createConnection(dbconfig);
   con.connect((err) => {
     if (err) {
-      console.log('Error connecting to database... retrying connection');
+      //console.log('Error connecting to database... retrying connection');
       setTimeout(() => {
         handleDisconnect();
       }, 2000);

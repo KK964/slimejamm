@@ -11,6 +11,8 @@ const antiFacny = require('./minecraft/antiFancyChat');
 const antiCaps = require('./minecraft/antiCaps');
 const antiChar = require('./minecraft/antiChar');
 
+const antiToxic = require('./ai/antiToxic');
+
 client.spamMap = new Map();
 client.antiSpam = new Map();
 client.antiMsg = new Map();
@@ -22,6 +24,13 @@ client.capsScore = new Map();
 client.capsCooldown = new Map();
 client.charScore = new Map();
 client.charCooldown = new Map();
+client.toxicScore = new Map();
+client.toxicCooldown = new Map();
+
+Array.prototype.returnPush = function (object) {
+  this.push(object);
+  return this;
+};
 
 //Minecraft stuff
 const nameToUUID = require('./minecraft/nameUUID');
@@ -61,6 +70,7 @@ client.on('ready', () => {
   antiFacny.start(client);
   antiCaps.start(client);
   antiChar.start(client);
+  antiToxic.start(client);
 });
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
@@ -188,6 +198,7 @@ client.on('message', (msg) => {
     antiFacny.check(msg);
     antiCaps.check(msg);
     antiChar.check(msg);
+    antiToxic.check(msg);
   } else {
     if (!msg.webhookID && msg.guild.id == '295429838041382912') {
       if (
