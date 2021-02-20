@@ -1,4 +1,4 @@
-
+node_modules/*
 .env
 minecraft/mysqlconf.json
 minecraft/test.js
