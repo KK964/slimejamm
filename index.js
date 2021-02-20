@@ -11,7 +11,11 @@ const antiFacny = require('./minecraft/antiFancyChat');
 const antiCaps = require('./minecraft/antiCaps');
 const antiChar = require('./minecraft/antiChar');
 
+<<<<<<< HEAD
 //const antiToxic = require('./ai/antiToxic');
+=======
+const antiToxic = require('./ai/antiToxic');
+>>>>>>> 7b2eddb66582adf24bae74ba221ddc0decc11972
 
 client.spamMap = new Map();
 client.antiSpam = new Map();
@@ -70,7 +74,11 @@ client.on('ready', () => {
   antiFacny.start(client);
   antiCaps.start(client);
   antiChar.start(client);
+<<<<<<< HEAD
   //antiToxic.start(client);
+=======
+  antiToxic.start(client);
+>>>>>>> 7b2eddb66582adf24bae74ba221ddc0decc11972
 });
 
 var staffCatagories = ['409367358721884170', '414202025740337152'];
@@ -198,7 +206,11 @@ client.on('message', (msg) => {
     antiFacny.check(msg);
     antiCaps.check(msg);
     antiChar.check(msg);
+<<<<<<< HEAD
     //antiToxic.check(msg);
+=======
+    antiToxic.check(msg);
+>>>>>>> 7b2eddb66582adf24bae74ba221ddc0decc11972
   } else {
     if (!msg.webhookID && msg.guild.id == '295429838041382912') {
       if (
