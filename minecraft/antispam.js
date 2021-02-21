@@ -142,10 +142,10 @@ function getTimeBetweenMessages(player) {
 function check(player, msg, message, input, server) {
   var score = getScore(player);
   input = input || '`' + msg + '`';
-  if (score > 20) {
+  if (score >= 10) {
     logSpams(player, msg, score, message, input, server);
   }
-  if (score > 40) {
+  if (score >= 30) {
     logReports(player, msg, score, message, input, server);
   }
 }
