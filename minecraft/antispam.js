@@ -145,7 +145,7 @@ function check(player, msg, message, input, server) {
   if (score > 20) {
     logSpams(player, msg, score, message, input, server);
   }
-  if (score > 50) {
+  if (score > 40) {
     logReports(player, msg, score, message, input, server);
   }
 }

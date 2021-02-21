@@ -81,7 +81,7 @@ function check(player, msg, message, input, server) {
   if (score > 10) {
     logSpams(player, msg, score, message, input, server);
   }
-  if (score > 30) {
+  if (score > 20) {
     logReports(player, msg, score, message, input, server);
   }
 }
