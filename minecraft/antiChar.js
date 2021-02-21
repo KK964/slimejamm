@@ -75,7 +75,9 @@ function runSameChar(player, msgChar, msg, message, server) {
   var ratio = getRatio(msgChar, dif);
   if (ratio >= 8 / 10 && msgChar > 3) {
     var score = getScore(player);
-    client.charScore.set(player, { score: score + 10, ms: Date.now() });
+    var toAdd = 10;
+    if (dif > toAdd) toAdd = parseInt(dif);
+    client.charScore.set(player, { score: score + parseInt(dif), ms: Date.now() });
     var sendMsg = msToDate(Date.now()) + ': `' + msg + '`';
     check(player, msg, message, sendMsg, server);
   }
