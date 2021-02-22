@@ -65,7 +65,7 @@ function getSame(msg) {
   }
   var s = 0;
   for (var [key, value] of sameCharMap.entries()) {
-    if (value > 2) s += value;
+    if (value > 2) if (s < value) s = value;
   }
   return s;
 }
