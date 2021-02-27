@@ -121,7 +121,7 @@ function logReports(player, msg, score, message, input, server) {
         'Triggered by [Message](' + linkToMessage + '). \n' + input + '\nScore: ' + score
       )
       .setTimestamp();
-    client.channels.cache.get('592256625494982676').send(spamEm);
+    client.channels.cache.get('815095695383330857').send(spamEm);
   }
 }
 
