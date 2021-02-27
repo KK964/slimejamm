@@ -27,6 +27,8 @@ client.charCooldown = new Map();
 client.toxicScore = new Map();
 client.toxicCooldown = new Map();
 
+client.advertingCooldown = new Map();
+
 Array.prototype.returnPush = function (object) {
   this.push(object);
   return this;
@@ -36,6 +38,7 @@ Array.prototype.returnPush = function (object) {
 const nameToUUID = require('./minecraft/nameUUID');
 const serverOn = require('./minecraft/serverOnline');
 const { transcode } = require('buffer');
+const ms = require('ms');
 //
 
 //
@@ -97,6 +100,8 @@ function sendAdvertisingMsg(msg, args, trigger) {
     advertiser = server;
     server = 'Unknown';
   }
+  advertiser = advertiser.replace(/(\[|\]|:|\*)/g, '');
+  client.advertingCooldown.set(advertiser, Date.now());
   var msgUser =
     advertiser.replace(/(\[|\]|:|\*)/g, '') +
     ' I may of advertised on ' +
@@ -108,7 +113,11 @@ function sendAdvertisingMsg(msg, args, trigger) {
     .setColor('#ff0000')
     .setDescription('Triggered by [' + trigger.join(', ') + '](' + linkToMessage + ')')
     .setTimestamp();
-  if (trigger.length >= 0) {
+  if (
+    trigger.length >= 0 &&
+    (!client.advertingCooldown.get(advertiser) ||
+      client.advertingCooldown.get(advertiser) + ms('30s') < Date.now())
+  ) {
     client.channels.cache.get('592256625494982676').send(advertisingEm); // release
     //client.channels.cache.get('754948719475949578').send(advertisingEm); // testing
   }
@@ -239,6 +248,44 @@ client.on('message', (msg) => {
           msg.channel.send(msg.member.displayName + ', do not advertise please.').then((delmsg) => {
             delmsg.delete({ timeout: 10000 });
           });
+        }
+      }
+    } else {
+      if (
+        !msg.webhookID &&
+        (inviteRegex.test(msg.content) ||
+          ipAdvertising.test(msg.content) ||
+          ipAddress.test(msg.content))
+      ) {
+        var trigger = [];
+        var resume = false;
+
+        if (msg.content.match(ipAdvertising)) {
+          let res = Array.from(msg.content.match(ipAdvertising));
+          trigger.push(...res);
+          resume = true;
+        }
+        if (msg.content.match(inviteRegex) && !msg.content.includes('https://discord.gg/BWQj987')) {
+          let res = Array.from(msg.content.match(inviteRegex));
+          trigger.push(...res);
+          resume = true;
+        }
+
+        if (
+          msg.content.match(ipAddress) &&
+          !msg.content.match(ipAdvertising) &&
+          !msg.content.includes('justminecraft.net')
+        ) {
+          let res = Array.from(msg.content.match(ipAddress));
+          checkIfIp2(msg, args, res, trigger);
+        }
+
+        if (resume == true) {
+          sendAdvertisingMsg(
+            msg,
+            ['Discord DM', msg.author.username + '#' + msg.author.discriminator],
+            trigger
+          );
         }
       }
     }
