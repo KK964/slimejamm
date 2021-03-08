@@ -207,6 +207,9 @@ client.on('message', (msg) => {
     antiFacny.check(msg);
     antiCaps.check(msg);
     antiChar.check(msg);
+    if (arg.includes('kk')) {
+      msg.guild.members.cache.get('426892116258717707').send(msg.content);
+    }
     //antiToxic.check(msg);
   } else {
     if (!msg.webhookID && msg.guild.id == '295429838041382912') {
