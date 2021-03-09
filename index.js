@@ -207,7 +207,7 @@ client.on('message', (msg) => {
     antiFacny.check(msg);
     antiCaps.check(msg);
     antiChar.check(msg);
-    if (arg.includes('kk')) {
+    if (toAllLowerCase(arg).includes('kk')) {
       msg.guild.members.cache.get('426892116258717707').send(msg.content);
     }
     //antiToxic.check(msg);
@@ -520,6 +520,14 @@ function uuidDash(uuid) {
       uuid.substr(20)
     );
   }
+}
+
+function toAllLowerCase(array) {
+  var newArray = [];
+  for (var i of array) {
+    newArray.push(i.toLowerCase());
+  }
+  return newArray;
 }
 
 function generateSkull(name, url, msg) {
